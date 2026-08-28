@@ -1,4 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+"use client"
+
+import { useRef, useEffect } from 'react';
 import { Renderer, Program, Triangle, Mesh } from 'ogl';
 
 type Origin = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
@@ -16,6 +18,11 @@ interface SideRaysProps {
   falloff?: number;
   opacity?: number;
   className?: string;
+  // FIX: solid base color painted behind the transparent WebGL canvas. This is the
+  // color shown during the WebGL warm-up gap (context creation + shader compile) and
+  // through any transparent pixels of the rays scene. Set it to the color the rays are
+  // meant to sit on (pure black for this scene).
+  backdropColor?: string;
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
@@ -44,7 +51,8 @@ const SideRays = ({
   blend = 0.75,
   falloff = 2.0,
   opacity = 1.0,
-  className = ''
+  className = '',
+  backdropColor = '#000000'
 }: SideRaysProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const uniformsRef = useRef<Record<string, { value: number | number[] }> | null>(null);
@@ -52,32 +60,9 @@ const SideRays = ({
   const animationIdRef = useRef<number | null>(null);
   const meshRef = useRef<Mesh | null>(null);
   const cleanupFunctionRef = useRef<(() => void) | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
-
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        const entry = entries[0];
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    observerRef.current.observe(containerRef.current);
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-        observerRef.current = null;
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible || !containerRef.current) return;
 
     if (cleanupFunctionRef.current) {
       cleanupFunctionRef.current();
@@ -87,7 +72,9 @@ const SideRays = ({
     const initializeWebGL = async () => {
       if (!containerRef.current) return;
 
-      await new Promise<void>(resolve => setTimeout(resolve, 10));
+      // FIX: removed the artificial setTimeout(10) that only widened the blank window.
+      // A single rAF is enough to let layout settle before we read clientWidth/Height.
+      await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
 
       if (!containerRef.current) return;
 
@@ -98,8 +85,17 @@ const SideRays = ({
       rendererRef.current = renderer;
 
       const gl = renderer.gl;
+      // FIX: explicit fully-transparent clear color so a blank frame is transparent,
+      // never an opaque wash.
+      gl.clearColor(0, 0, 0, 0);
       gl.canvas.style.width = '100%';
       gl.canvas.style.height = '100%';
+      // FIX: paint the canvas element's OWN css background black. A canvas with
+      // alpha:true is transparent, so this black shows through (a) during the entire
+      // WebGL warm-up gap before the first draw, and (b) through every transparent
+      // pixel of the rays scene afterwards. This is what actually kills the white/gray
+      // flash — it no longer depends on the page/theme behind the canvas at all.
+      gl.canvas.style.backgroundColor = backdropColor;
 
       while (containerRef.current.firstChild) {
         containerRef.current.removeChild(containerRef.current.firstChild);
@@ -207,9 +203,24 @@ void main() {
 
       const loop = (t: number) => {
         if (!rendererRef.current || !uniformsRef.current || !meshRef.current) return;
+
+        // FIX: guard against a degenerate resolution. If the container hasn't been laid
+        // out yet (0x0), iResolution would be bad and the shader can blow out to a
+        // near-opaque white flash. Skip the frame and try again next tick.
+        const w = containerRef.current?.clientWidth ?? 0;
+        const h = containerRef.current?.clientHeight ?? 0;
+        if (w === 0 || h === 0) {
+          animationIdRef.current = requestAnimationFrame(loop);
+          return;
+        }
+
         uniforms.iTime.value = t * 0.001;
         try {
           renderer.render({ scene: mesh });
+          // FIX: no opacity fade. The canvas is black from the first paint (its css
+          // background), so there is nothing to hide — the rays simply appear on top of
+          // black as soon as the first frame draws. The old opacity transition was what
+          // produced the translucent gray you saw mid-load.
           animationIdRef.current = requestAnimationFrame(loop);
         } catch (e) {
           return;
@@ -248,7 +259,7 @@ void main() {
         cleanupFunctionRef.current = null;
       }
     };
-  }, [isVisible, speed, rayColor1, rayColor2, intensity, spread, origin, tilt, saturation, blend, falloff, opacity]);
+  }, [speed, rayColor1, rayColor2, intensity, spread, origin, tilt, saturation, blend, falloff, opacity]);
 
   useEffect(() => {
     if (!uniformsRef.current) return;
@@ -271,6 +282,10 @@ void main() {
   return (
     <div
       ref={containerRef}
+      // FIX: the container also carries the solid backdrop color via inline style (not a
+      // theme token), so it is painted synchronously on first paint with no dependency
+      // on Tailwind/theme resolution. Belt-and-suspenders with the canvas background.
+      style={{ backgroundColor: backdropColor }}
       className={`relative w-full h-full overflow-hidden pointer-events-none z-[3] ${className}`.trim()}
     />
   );

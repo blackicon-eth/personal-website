@@ -1,8 +1,15 @@
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import SideRays from "@/components/SideRays";
 import { StrokeText } from "@/components/StrokeText";
+import { FlipAvatar } from "@/components/FlipAvatar";
+
+const names = ["Mattia Verdecchi", "blackicon.eth"];
 
 export function HeroSection() {
+  const [side, setSide] = useState(0);
+  const [flipping, setFlipping] = useState(false);
+
   return (
     <section
       id="hero"
@@ -29,24 +36,65 @@ export function HeroSection() {
         />
       </motion.div>
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-zinc-950 z-[4]" />
-      <div className="relative z-10 flex items-center gap-12 px-8">
-        <div className="size-48 shrink-0 rounded-full bg-white/5 ring-1 ring-white/10" />
-        <div className="text-left">
-          <StrokeText
-            text="Your Name"
-            strokeColor="#EAB308"
-            fillColor="#F8FAFC"
-            strokeWidth={1.4}
-            drawDuration={1.2}
-            fillDelay={0.15}
-            stagger={0.04}
-            fontSize={64}
-            fontWeight={700}
-            letterSpacing={-1}
+      <div className="relative z-10 flex w-full items-center px-8">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.0, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-[35%] flex justify-end pr-8"
+        >
+          <FlipAvatar
+            side={side}
+            flipping={flipping}
+            onFlipStart={() => setFlipping(true)}
+            onMidFlip={() => setSide((s) => (s === 0 ? 1 : 0))}
           />
-          <p className="mt-3 max-w-md text-lg leading-relaxed text-zinc-400">
-            A short description about yourself — what you do, what you are passionate about, and what makes you tick.
-          </p>
+        </motion.div>
+        <div className="flex-1 text-left pl-8 shrink-0">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <AnimatePresence
+              mode="wait"
+              onExitComplete={() => setFlipping(false)}
+            >
+              <motion.div
+                key={side}
+                className="min-h-[8rem]"
+                initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <StrokeText
+                  text={names[side]}
+                  strokeColor="#A8A29E"
+                  fillColor="#F8FAFC"
+                  strokeWidth={1.4}
+                  drawDuration={1.4}
+                  fillDelay={0.0}
+                  stagger={0.05}
+                  fontSize={96}
+                  fontWeight={700}
+                  letterSpacing={-2}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-4 max-w-2xl text-[21px] leading-relaxed text-zinc-400 pl-3"
+          >
+            Full-Stack Product Engineer focused on building products users love.
+            <br />
+            Founder, hacker, and rapid prototyper. Experienced in taking ideas
+            from zero to production with TypeScript, React, Next.js, and
+            AI-assisted development.
+          </motion.div>
         </div>
       </div>
     </section>
