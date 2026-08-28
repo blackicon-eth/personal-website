@@ -37,13 +37,13 @@ export function NavBar() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="flex gap-2 rounded-full border border-white/10 bg-white/5 px-2 py-1.5 backdrop-blur-xl shadow-[0_0_30px_rgba(255,255,255,0.03)]"
+        className="flex gap-2 rounded-full border border-white/15 bg-zinc-900/50 px-2 py-1.5 backdrop-blur-xl shadow-[0_0_30px_rgba(255,255,255,0.04)]"
       >
         {links.map((link) => (
           <motion.li key={link.href} variants={item}>
             <a
               href={link.href}
-              className="inline-block rounded-full px-5 py-2.5 text-base text-zinc-400 transition-colors hover:text-white hover:bg-white/10"
+              className="inline-block rounded-full px-5 py-2.5 text-base text-zinc-300 transition-colors duration-200 hover:text-white hover:bg-white/10"
             >
               {link.label}
             </a>

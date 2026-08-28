@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import SideRays from "@/components/SideRays";
+import { Aurora } from "@/components/Aurora";
 import { StrokeText } from "@/components/StrokeText";
 import { FlipAvatar } from "@/components/FlipAvatar";
 
@@ -21,18 +21,11 @@ export function HeroSection() {
         transition={{ duration: 0.8, delay: 0.15 }}
         className="absolute inset-0"
       >
-        <SideRays
-          speed={2.5}
-          rayColor1="#EAB308"
-          rayColor2="#96c8ff"
-          intensity={2}
-          spread={2}
-          origin="top-right"
-          tilt={0}
-          saturation={1.5}
-          blend={0.75}
-          falloff={1.6}
-          opacity={1.0}
+        <Aurora
+          colorStops={["#5227FF", "#7cff67", "#5227FF"]}
+          blend={0.5}
+          amplitude={1.0}
+          speed={0.5}
         />
       </motion.div>
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-zinc-950 z-[4]" />
