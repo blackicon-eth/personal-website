@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Aurora } from "@/components/Aurora";
 import { StrokeText } from "@/components/StrokeText";
 import { FlipAvatar } from "@/components/FlipAvatar";
+import { GlassButton } from "@/components/GlassButton";
 
 const names = ["Mattia Verdecchi", "blackicon.eth"];
 
 export function HeroSection() {
   const [side, setSide] = useState(0);
-  const [flipping, setFlipping] = useState(false);
+
+  const handleToggle = useCallback(() => {
+    setSide((s) => (s === 0 ? 1 : 0));
+  }, []);
 
   return (
     <section
@@ -29,7 +33,7 @@ export function HeroSection() {
         />
       </motion.div>
       <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-zinc-950 z-[4]" />
-      <div className="relative z-10 flex w-full items-center px-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1400px] items-center px-8 -translate-y-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -37,10 +41,7 @@ export function HeroSection() {
           className="w-[35%] flex justify-end pr-8"
         >
           <FlipAvatar
-            side={side}
-            flipping={flipping}
-            onFlipStart={() => setFlipping(true)}
-            onMidFlip={() => setSide((s) => (s === 0 ? 1 : 0))}
+            onToggle={handleToggle}
           />
         </motion.div>
         <div className="flex-1 text-left pl-8 shrink-0">
@@ -49,10 +50,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <AnimatePresence
-              mode="wait"
-              onExitComplete={() => setFlipping(false)}
-            >
+            <AnimatePresence mode="wait">
               <motion.div
                 key={side}
                 className="min-h-[8rem]"
@@ -80,13 +78,34 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-4 max-w-2xl text-[21px] leading-relaxed text-zinc-400 pl-3"
+            className="mt-4 max-w-4xl text-[22px] leading-relaxed text-zinc-400 pl-3"
           >
-            Full-Stack Product Engineer focused on building products users love.
+            Full-Stack Engineer focused on building products users love.
             <br />
             Founder, hacker, and rapid prototyper. Experienced in taking ideas
             from zero to production with TypeScript, React, Next.js, and
             AI-assisted development.
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-8 pl-3 flex items-center gap-4"
+          >
+            <GlassButton
+              variant="primary"
+              size="md"
+              onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              View my work
+            </GlassButton>
+            <GlassButton
+              variant="outline"
+              size="md"
+              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Get in touch
+            </GlassButton>
           </motion.div>
         </div>
       </div>
