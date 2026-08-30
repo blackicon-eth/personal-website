@@ -88,6 +88,7 @@ export function SideNav() {
         items={sections.map((s) => s.label)}
         selected={active}
         onChange={handleChange}
+        onSelect={handleChange}
         side="right"
         fontSize={3}
         spacing={1.4}

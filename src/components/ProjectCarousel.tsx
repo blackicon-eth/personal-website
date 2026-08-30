@@ -92,7 +92,7 @@ export function ProjectCarousel() {
       <div className="relative w-full lg:w-[55%] shrink-0">
         <div
           ref={viewportRef}
-          className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10"
+          className="relative aspect-square overflow-hidden rounded-2xl border border-white/10"
         >
           {width > 0 && (
             <motion.div
@@ -207,25 +207,6 @@ export function ProjectCarousel() {
               <p className="mt-4 text-xl leading-relaxed text-zinc-400">
                 {project.description}
               </p>
-
-              <div className="mt-8 flex gap-12">
-                <div>
-                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                    Role
-                  </span>
-                  <span className="mt-1 block text-lg text-zinc-200">
-                    {project.role}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                    Year
-                  </span>
-                  <span className="mt-1 block text-lg text-zinc-200">
-                    {project.year}
-                  </span>
-                </div>
-              </div>
 
               <div className="mt-8 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (

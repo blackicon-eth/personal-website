@@ -13,6 +13,7 @@ export interface OptionWheelProps {
   defaultSelected?: number;
   selected?: number;
   onChange?: (index: number, item: string) => void;
+  onSelect?: (index: number, item: string) => void;
   textColor?: string;
   activeColor?: string;
   side?: Side;
@@ -52,6 +53,7 @@ export function OptionWheel({
   defaultSelected = 0,
   selected,
   onChange,
+  onSelect,
   textColor = "#a1a1aa",
   activeColor = "#ffffff",
   side = "left",
@@ -76,6 +78,7 @@ export function OptionWheel({
   const lastRef = useRef(0);
   const cfgRef = useRef<WheelConfig>({} as WheelConfig);
   const onChangeRef = useRef(onChange);
+  const onSelectRef = useRef(onSelect);
   const selectedRef = useRef(defaultSelected);
   const dragRef = useRef<{ y: number; start: number; id: number } | null>(null);
   const dragMovedRef = useRef(false);
@@ -88,6 +91,7 @@ export function OptionWheel({
       : 16;
 
   onChangeRef.current = onChange;
+  onSelectRef.current = onSelect;
   cfgRef.current = {
     count: items.length,
     items,
@@ -222,7 +226,8 @@ export function OptionWheel({
         if (d > cfg.count / 2) d -= cfg.count;
         else if (d < -cfg.count / 2) d += cfg.count;
       }
-      applyTarget(cur + d, true);
+      applyTarget(cur + d, true, false);
+      onSelectRef.current?.(index, cfg.items[index]);
     },
     [applyTarget],
   );

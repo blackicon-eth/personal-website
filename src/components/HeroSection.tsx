@@ -45,7 +45,7 @@ export function HeroSection() {
         </span>
         <Socials />
       </motion.div>
-      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-6">
+      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-7">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
