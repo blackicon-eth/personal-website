@@ -2,13 +2,14 @@ import { motion } from "motion/react";
 import { HeroSection } from "@/components/HeroSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
+import { HackathonsSection } from "@/components/HackathonsSection";
 import { ContactSection } from "@/components/ContactSection";
-import { NavBar } from "@/components/NavBar";
+import { SideNav } from "@/components/SideNav";
 
 export function Home() {
   return (
     <main className="bg-zinc-950 text-zinc-100">
-      <NavBar />
+      <SideNav />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -17,6 +18,7 @@ export function Home() {
         <HeroSection />
         <ProjectsSection />
         <ExperienceSection />
+        <HackathonsSection />
         <ContactSection />
       </motion.div>
     </main>
