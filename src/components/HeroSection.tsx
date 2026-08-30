@@ -32,8 +32,8 @@ export function HeroSection() {
           speed={0.5}
         />
       </motion.div>
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent to-zinc-950 z-[4]" />
-      <div className="relative z-10 flex w-full items-center px-24 lg:pr-[26rem] -translate-y-6">
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-zinc-950 z-4" />
+      <div className="relative z-10 flex w-full items-center px-24 lg:pr-104 -translate-y-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -53,7 +53,7 @@ export function HeroSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={side}
-                className="min-h-[8rem]"
+                className="min-h-32"
                 initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
