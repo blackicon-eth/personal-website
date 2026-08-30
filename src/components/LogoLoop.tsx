@@ -18,6 +18,7 @@ export type LogoItem =
       href?: string;
       title?: string;
       ariaLabel?: string;
+      description?: string;
     }
   | {
       src: string;
@@ -326,7 +327,7 @@ export const LogoLoop = memo<LogoLoopProps>(
           "relative group",
           isVertical
             ? "overflow-hidden h-full inline-block"
-            : "overflow-hidden",
+            : "overflow-x-clip",
           "[--logoloop-gap:32px]",
           "[--logoloop-logoHeight:28px]",
           "[--logoloop-fadeColorAuto:#ffffff]",

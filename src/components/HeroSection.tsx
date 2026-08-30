@@ -5,6 +5,7 @@ import { StrokeText } from "@/components/StrokeText";
 import { FlipAvatar } from "@/components/FlipAvatar";
 import { GlassButton } from "@/components/GlassButton";
 import { SkillsLoop } from "@/components/SkillsLoop";
+import { Socials } from "@/components/Socials";
 
 const names = ["Mattia Verdecchi", "blackicon.eth"];
 
@@ -33,19 +34,29 @@ export function HeroSection() {
           speed={0.5}
         />
       </motion.div>
-      <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-b from-transparent to-zinc-950 z-4" />
-      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 -translate-y-16">
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+        className="absolute left-10 top-5 z-20 flex items-center gap-4 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"
+      >
+        <span className="text-xs font-medium uppercase tracking-[0.25em] text-zinc-300">
+          Find me on
+        </span>
+        <Socials />
+      </motion.div>
+      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.0, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="w-[33%] flex justify-center pr-2"
+          className="w-[33%] flex justify-center pr-4"
         >
           <FlipAvatar
             onToggle={handleToggle}
           />
         </motion.div>
-        <div className="flex-1 text-left shrink-0 pl-2">
+        <div className="flex-1 text-left shrink-0 pl-4">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -111,6 +122,9 @@ export function HeroSection() {
         </div>
       </div>
       <div className="relative z-10 w-full px-24 lg:pr-104 pb-24">
+        <h2 className="mb-8 text-xl font-medium uppercase tracking-[0.2em] text-zinc-400">
+          My Skills
+        </h2>
         <SkillsLoop />
       </div>
     </section>
