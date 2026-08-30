@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { OptionWheel } from "@/components/OptionWheel";
 
@@ -12,12 +12,15 @@ const sections = [
 
 export function SideNav() {
   const [active, setActive] = useState(0);
+  const navigatingRef = useRef(false);
+  const unlockTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            if (navigatingRef.current) return;
             const idx = sections.findIndex((s) => s.id === entry.target.id);
             if (idx >= 0) setActive(idx);
           }
@@ -34,7 +37,41 @@ export function SideNav() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const unlock = () => {
+      navigatingRef.current = false;
+      if (unlockTimerRef.current != null) {
+        window.clearTimeout(unlockTimerRef.current);
+        unlockTimerRef.current = null;
+      }
+    };
+
+    if (!("onscrollend" in document.documentElement)) return;
+    document.addEventListener("scrollend", unlock, { passive: true });
+    return () => document.removeEventListener("scrollend", unlock);
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (unlockTimerRef.current != null) {
+        window.clearTimeout(unlockTimerRef.current);
+      }
+    },
+    [],
+  );
+
   const handleChange = useCallback((index: number) => {
+    navigatingRef.current = true;
+    setActive(index);
+
+    if (unlockTimerRef.current != null) {
+      window.clearTimeout(unlockTimerRef.current);
+    }
+    unlockTimerRef.current = window.setTimeout(() => {
+      navigatingRef.current = false;
+      unlockTimerRef.current = null;
+    }, 1600);
+
     document
       .getElementById(sections[index].id)
       ?.scrollIntoView({ behavior: "smooth" });
