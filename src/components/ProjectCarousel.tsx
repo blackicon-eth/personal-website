@@ -85,14 +85,14 @@ export function ProjectCarousel() {
 
   return (
     <div
-      className="flex flex-col items-center gap-10 lg:flex-row lg:gap-16"
+      className="flex flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-20"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative w-full lg:w-[420px] shrink-0">
+      <div className="relative w-full lg:w-[55%] shrink-0">
         <div
           ref={viewportRef}
-          className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-white/10"
+          className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10"
         >
           {width > 0 && (
             <motion.div
@@ -142,10 +142,10 @@ export function ProjectCarousel() {
                 type="button"
                 aria-label={`Go to project ${i + 1}`}
                 onClick={() => goTo(i)}
-                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                   i === activeIndex
-                    ? "w-6 bg-white"
-                    : "w-2 bg-white/25 hover:bg-white/50"
+                    ? "w-7 bg-white"
+                    : "w-2.5 bg-white/25 hover:bg-white/50"
                 }`}
               />
             ))}
@@ -155,9 +155,9 @@ export function ProjectCarousel() {
               type="button"
               aria-label="Previous project"
               onClick={prev}
-              className="flex size-10 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
+              className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -165,9 +165,9 @@ export function ProjectCarousel() {
               type="button"
               aria-label="Next project"
               onClick={next}
-              className="flex size-10 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
+              className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
@@ -175,7 +175,7 @@ export function ProjectCarousel() {
         </div>
       </div>
 
-      <div className="w-full lg:flex-1">
+      <div className="relative w-full lg:flex-1">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -183,26 +183,79 @@ export function ProjectCarousel() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative"
           >
-            <span className="font-mono text-sm text-zinc-500">
-              {String(activeIndex + 1).padStart(2, "0")} /{" "}
-              {String(projects.length).padStart(2, "0")}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-16 right-0 select-none font-bold leading-none text-transparent"
+              style={{
+                WebkitTextStroke: "1px rgba(255,255,255,0.07)",
+                fontSize: "clamp(10rem, 22vw, 19rem)",
+              }}
+            >
+              {String(activeIndex + 1).padStart(2, "0")}
             </span>
-            <h3 className="mt-3 text-3xl font-semibold text-white lg:text-4xl">
-              {project.title}
-            </h3>
-            <p className="mt-4 max-w-xl text-lg leading-relaxed text-zinc-400">
-              {project.description}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-zinc-300"
-                >
-                  {tag}
-                </span>
-              ))}
+
+            <div className="relative">
+              <span className="font-mono text-base text-zinc-500">
+                {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                {String(projects.length).padStart(2, "0")}
+              </span>
+              <h3 className="mt-3 text-4xl font-semibold text-white lg:text-5xl">
+                {project.title}
+              </h3>
+              <p className="mt-4 text-xl leading-relaxed text-zinc-400">
+                {project.description}
+              </p>
+
+              <div className="mt-8 flex gap-12">
+                <div>
+                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
+                    Role
+                  </span>
+                  <span className="mt-1 block text-lg text-zinc-200">
+                    {project.role}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
+                    Year
+                  </span>
+                  <span className="mt-1 block text-lg text-zinc-200">
+                    {project.year}
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-base text-zinc-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {project.links && project.links.length > 0 && (
+                <div className="mt-8 flex gap-6">
+                  {project.links.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-base text-white underline decoration-zinc-600 underline-offset-4 transition-colors duration-200 hover:decoration-white"
+                    >
+                      {link.label}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>
