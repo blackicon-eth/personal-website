@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { OptionWheel } from "@/components/OptionWheel";
 import { useI18n } from "@/i18n/LocaleProvider";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -23,7 +23,7 @@ const navKey: Record<SectionId, keyof Dictionary["nav"]> = {
 };
 
 export function SideNav() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [active, setActive] = useState(0);
   const navigatingRef = useRef(false);
   const unlockTimerRef = useRef<number | null>(null);
@@ -98,26 +98,38 @@ export function SideNav() {
       transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       className="fixed inset-y-0 right-0 z-50 hidden w-96 lg:block"
     >
-      <OptionWheel
-        items={sectionIds.map((id) => t.nav[navKey[id]])}
-        selected={active}
-        onChange={handleChange}
-        onSelect={handleChange}
-        side="right"
-        draggable={false}
-        fontSize={3}
-        spacing={1.4}
-        curve={1}
-        tilt={6}
-        blur={2}
-        fade={0.25}
-        minOpacity={0.05}
-        smoothing={200}
-        inset={48}
-        textColor="#a1a1aa"
-        activeColor="#ffffff"
-        className="-translate-y-12"
-      />
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={locale}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="h-full w-full"
+        >
+          <OptionWheel
+            items={sectionIds.map((id) => t.nav[navKey[id]])}
+            selected={active}
+            defaultSelected={active}
+            onChange={handleChange}
+            onSelect={handleChange}
+            side="right"
+            draggable={false}
+            fontSize={3}
+            spacing={1.4}
+            curve={1}
+            tilt={6}
+            blur={2}
+            fade={0.25}
+            minOpacity={0.05}
+            smoothing={200}
+            inset={48}
+            textColor="#a1a1aa"
+            activeColor="#ffffff"
+            className="-translate-y-12"
+          />
+        </motion.div>
+      </AnimatePresence>
     </motion.div>
   );
 }

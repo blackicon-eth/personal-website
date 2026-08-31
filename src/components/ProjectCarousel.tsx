@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import type { PanInfo } from "motion/react";
 import { projects } from "@/data/projects";
+import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 const SPRING = { type: "spring", stiffness: 300, damping: 30 } as const;
@@ -273,14 +274,16 @@ export function ProjectCarousel() {
                 {project.title}
               </h3>
               <p className="mt-4 whitespace-pre-line text-xl leading-relaxed text-zinc-400">
-                {t.projects.items[project.id].description}
+                <LocaleText block>
+                  {t.projects.items[project.id].description}
+                </LocaleText>
               </p>
             </div>
 
             <div className="flex flex-col gap-6">
               <div>
                 <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                  {t.projects.techUsed}
+                  <LocaleText>{t.projects.techUsed}</LocaleText>
                 </span>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
@@ -297,7 +300,7 @@ export function ProjectCarousel() {
               {project.links && project.links.length > 0 && (
                 <div>
                   <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                    {t.projects.relatedLinks}
+                    <LocaleText>{t.projects.relatedLinks}</LocaleText>
                   </span>
                   <div className="mt-3 flex flex-wrap gap-6">
                     {project.links.map((link) => (

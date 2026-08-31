@@ -1,6 +1,7 @@
 import { FaGlobe } from "react-icons/fa6";
 import { locales, type Locale } from "@/i18n/config";
 import { useI18n } from "@/i18n/LocaleProvider";
+import { LocaleText } from "@/components/LocaleText";
 
 const short: Record<Locale, string> = {
   en: "EN",
@@ -22,7 +23,7 @@ export function LocaleSwitcher() {
     >
       <FaGlobe className="h-4.5 w-4.5 text-zinc-400" />
       <span className="text-sm font-medium uppercase tracking-wider">
-        {short[next]}
+        <LocaleText>{short[next]}</LocaleText>
       </span>
     </button>
   );

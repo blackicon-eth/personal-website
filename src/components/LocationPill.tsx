@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
+import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 function getRomeOffsetHours(date: Date): number {
@@ -42,7 +43,9 @@ export function LocationPill() {
   return (
     <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md">
       <FaLocationDot className="h-4.5 w-4.5 text-zinc-400" />
-      <span className="text-sm font-medium text-zinc-300">{t.location.city}</span>
+      <span className="text-sm font-medium text-zinc-300">
+        <LocaleText>{t.location.city}</LocaleText>
+      </span>
       <span className="h-1 w-1 rounded-full bg-zinc-500" />
       <span className="text-sm font-medium text-zinc-300">GMT+{offset}</span>
     </div>

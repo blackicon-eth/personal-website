@@ -4,6 +4,7 @@ import { ShinyText } from "@/components/ShinyText";
 import { SpecularButton } from "@/components/SpecularButton";
 import { Socials } from "@/components/Socials";
 import { GradientWaves } from "@/components/GradientWaves";
+import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 const EMAIL = "verdecchimattia60@gmail.com";
@@ -46,7 +47,7 @@ export function ContactSection() {
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           className="font-mono text-base uppercase tracking-[0.3em] text-zinc-500"
         >
-          {t.contact.eyebrow}
+          <LocaleText>{t.contact.eyebrow}</LocaleText>
         </motion.p>
 
         <motion.h2
@@ -56,9 +57,11 @@ export function ContactSection() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           className="mt-6 text-6xl font-bold leading-tight md:text-8xl"
         >
-          <ShinyText text={t.contact.titleLine1} speed={3} />
-          <br />
-          <ShinyText text={t.contact.titleLine2} speed={3} />
+          <LocaleText block>
+            <ShinyText text={t.contact.titleLine1} speed={3} />
+            <br />
+            <ShinyText text={t.contact.titleLine2} speed={3} />
+          </LocaleText>
         </motion.h2>
 
         <motion.p
@@ -68,9 +71,11 @@ export function ContactSection() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-zinc-400"
         >
-          {t.contact.bodyLine1}
-          <br />
-          {t.contact.bodyLine2}
+          <LocaleText block>
+            {t.contact.bodyLine1}
+            <br />
+            {t.contact.bodyLine2}
+          </LocaleText>
         </motion.p>
 
         <motion.div

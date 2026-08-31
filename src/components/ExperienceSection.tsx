@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { motion } from "motion/react";
 import { experience } from "@/data/experience";
+import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 function linkify(text: string) {
@@ -87,12 +88,14 @@ function Entry({
         }`}
       >
         <span className="font-mono text-sm uppercase tracking-widest text-zinc-500">
-          {period}
+          <LocaleText>{period}</LocaleText>
         </span>
         <h3 className="mt-3 text-3xl font-semibold text-white">{company}</h3>
-        <p className="mt-1 text-lg text-zinc-300">{role}</p>
+        <p className="mt-1 text-lg text-zinc-300">
+          <LocaleText>{role}</LocaleText>
+        </p>
         <p className="mt-4 text-lg leading-relaxed text-zinc-400">
-          {linkify(description)}
+          <LocaleText block>{linkify(description)}</LocaleText>
         </p>
       </motion.div>
     </div>

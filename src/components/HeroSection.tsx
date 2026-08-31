@@ -8,6 +8,7 @@ import { SkillsLoop } from "@/components/SkillsLoop";
 import { Socials } from "@/components/Socials";
 import { LocationPill } from "@/components/LocationPill";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 const names = ["Mattia Verdecchi", "blackicon.eth"];
@@ -45,7 +46,7 @@ export function HeroSection() {
         className="absolute left-10 top-6 z-20 flex items-center gap-4 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"
       >
         <span className="text-xs font-medium uppercase tracking-[0.25em] text-zinc-300">
-          {t.hero.findMeOn}
+          <LocaleText>{t.hero.findMeOn}</LocaleText>
         </span>
         <Socials />
       </motion.div>
@@ -55,8 +56,8 @@ export function HeroSection() {
         transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
         className="absolute right-10 top-6 z-[60] flex items-center gap-3"
       >
-        <LocaleSwitcher />
         <LocationPill />
+        <LocaleSwitcher />
       </motion.div>
       <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-9">
         <motion.div
@@ -105,9 +106,11 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
             className="mt-4 max-w-4xl text-[22px] leading-relaxed text-zinc-400 pl-3"
           >
-            {t.hero.intro}
-            <br />
-            {t.hero.blurb}
+            <LocaleText block>
+              {t.hero.intro}
+              <br />
+              {t.hero.blurb}
+            </LocaleText>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -120,21 +123,21 @@ export function HeroSection() {
               size="md"
               onClick={() => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })}
             >
-              {t.hero.viewMyWork}
+              <LocaleText>{t.hero.viewMyWork}</LocaleText>
             </GlassButton>
             <GlassButton
               variant="outline"
               size="md"
               onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
             >
-              {t.hero.getInTouch}
+              <LocaleText>{t.hero.getInTouch}</LocaleText>
             </GlassButton>
           </motion.div>
         </div>
       </div>
       <div className="relative z-10 w-full px-24 lg:pr-104 pb-25">
         <h2 className="mb-8 text-xl font-medium uppercase tracking-[0.2em] text-zinc-400">
-          {t.hero.mySkills}
+          <LocaleText>{t.hero.mySkills}</LocaleText>
         </h2>
         <SkillsLoop />
       </div>
