@@ -14,6 +14,7 @@ export interface DriftWallItem {
   title?: string;
   subtitle?: string;
   href?: string;
+  logoTranslateY?: number
   background?: string;
 }
 
@@ -297,7 +298,7 @@ export function DriftWall({
     "w-full h-[calc(var(--dw-tile-h)+var(--dw-gap))] [transform-style:preserve-3d]",
   );
   const innerClass = cx(
-    "pointer-events-none absolute inset-[calc(var(--dw-gap)/2)] block overflow-hidden border border-white/10 bg-[#0b0b12]",
+    "absolute inset-[calc(var(--dw-gap)/2)] block overflow-hidden border border-white/10 bg-[#0b0b12]",
     "rounded-[var(--dw-radius)] opacity-[var(--dw-dim)] [transform:translateZ(0)]",
     "transition-[transform,opacity,box-shadow] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
     "group-[.is-active]/tile:opacity-100 group-[.is-active]/tile:[transform:translateZ(var(--dw-lift))]",
@@ -324,7 +325,9 @@ export function DriftWall({
   const renderTile = (item: DriftWallItem, id: string, colIndex: number) => {
     const inner = (
       <span className={innerClass}>
-        <span className="absolute inset-0 flex items-center justify-center p-4">
+        <span className="absolute inset-0 flex items-center justify-center p-4" style={{
+          transform: `translate(0px, ${item.logoTranslateY}px)`
+        }}>
           <img
             src={item.image}
             alt={item.title ?? ""}
@@ -342,7 +345,7 @@ export function DriftWall({
             <span className="shrink-0 font-mono text-xs text-zinc-400">{item.subtitle}</span>
           )}
         </span>
-      </span>
+      </span >
     );
     const commonProps = {
       className: cx(tileClass, activeId === id && "is-active"),
