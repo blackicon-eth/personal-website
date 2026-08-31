@@ -6,6 +6,7 @@ import { FlipAvatar } from "@/components/FlipAvatar";
 import { GlassButton } from "@/components/GlassButton";
 import { SkillsLoop } from "@/components/SkillsLoop";
 import { Socials } from "@/components/Socials";
+import { LocationPill } from "@/components/LocationPill";
 
 const names = ["Mattia Verdecchi", "blackicon.eth"];
 
@@ -45,6 +46,7 @@ export function HeroSection() {
         </span>
         <Socials />
       </motion.div>
+      <LocationPill />
       <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-9">
         <motion.div
           initial={{ opacity: 0 }}

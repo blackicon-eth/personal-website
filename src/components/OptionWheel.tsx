@@ -268,8 +268,10 @@ export function OptionWheel({
       role="listbox"
       tabIndex={0}
       aria-label="Navigation"
-      className={`relative h-full w-full select-none overflow-hidden outline-none [touch-action:none] ${
-        isDragging ? "cursor-grabbing" : "cursor-grab"
+      className={`relative h-full w-full select-none overflow-hidden outline-none ${
+        draggable
+          ? `[touch-action:none] ${isDragging ? "cursor-grabbing" : "cursor-grab"}`
+          : ""
       }${className ? ` ${className}` : ""}`}
       style={
         {

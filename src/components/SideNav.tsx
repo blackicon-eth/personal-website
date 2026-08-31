@@ -91,6 +91,7 @@ export function SideNav() {
         onChange={handleChange}
         onSelect={handleChange}
         side="right"
+        draggable={false}
         fontSize={3}
         spacing={1.4}
         curve={1}
