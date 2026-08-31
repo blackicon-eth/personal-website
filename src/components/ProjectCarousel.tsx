@@ -1,18 +1,21 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import type { PanInfo } from "motion/react";
 import { projects } from "@/data/projects";
 
 const SPRING = { type: "spring", stiffness: 300, damping: 30 } as const;
 const AUTOPLAY_DELAY = 5000;
+const MANUAL_PAUSE_MS = 3 * 60 * 1000;
 
 export function ProjectCarousel() {
   const [width, setWidth] = useState(0);
   const [position, setPosition] = useState(1);
   const [paused, setPaused] = useState(false);
+  const [manualPaused, setManualPaused] = useState(false);
   const [isJumping, setIsJumping] = useState(false);
   const x = useMotionValue(0);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const manualTimerRef = useRef<number | null>(null);
 
   const itemsForRender = useMemo(
     () => [projects[projects.length - 1], ...projects, projects[0]],
@@ -35,12 +38,45 @@ export function ProjectCarousel() {
     projects.length === 0 ? 0 : (position - 1 + projects.length) % projects.length;
 
   useEffect(() => {
-    if (paused || itemsForRender.length <= 1) return;
+    if (paused || manualPaused || itemsForRender.length <= 1) return;
     const id = setInterval(() => {
       setPosition((p) => Math.min(p + 1, lastCloneIndex));
     }, AUTOPLAY_DELAY);
     return () => clearInterval(id);
-  }, [paused, itemsForRender.length, lastCloneIndex]);
+  }, [paused, manualPaused, itemsForRender.length, lastCloneIndex]);
+
+  const startManualPause = useCallback(() => {
+    if (manualTimerRef.current != null) {
+      window.clearTimeout(manualTimerRef.current);
+    }
+    setManualPaused(true);
+    manualTimerRef.current = window.setTimeout(() => {
+      setManualPaused(false);
+      manualTimerRef.current = null;
+    }, MANUAL_PAUSE_MS);
+  }, []);
+
+  const cancelManualPause = useCallback(() => {
+    if (manualTimerRef.current != null) {
+      window.clearTimeout(manualTimerRef.current);
+      manualTimerRef.current = null;
+    }
+    setManualPaused(false);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("site:navigate", cancelManualPause);
+    return () => window.removeEventListener("site:navigate", cancelManualPause);
+  }, [cancelManualPause]);
+
+  useEffect(
+    () => () => {
+      if (manualTimerRef.current != null) {
+        window.clearTimeout(manualTimerRef.current);
+      }
+    },
+    [],
+  );
 
   const effectiveTransition = isJumping ? { duration: 0 } : SPRING;
 
@@ -76,9 +112,14 @@ export function ProjectCarousel() {
     );
   };
 
-  const next = () =>
+  const next = () => {
+    startManualPause();
     setPosition((p) => Math.min(p + 1, lastCloneIndex));
-  const prev = () => setPosition((p) => Math.max(p - 1, 0));
+  };
+  const prev = () => {
+    startManualPause();
+    setPosition((p) => Math.max(p - 1, 0));
+  };
   const goTo = (i: number) => setPosition(i + 1);
 
   const project = projects[activeIndex];
@@ -120,11 +161,21 @@ export function ProjectCarousel() {
                     />
                   ) : (
                     <div
-                      className="flex h-full w-full items-end p-6"
+                      className="relative flex h-full w-full items-center justify-center overflow-hidden p-8"
                       style={{ background: p.gradient }}
                     >
-                      <span className="font-mono text-sm text-white/60">
-                        project
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -bottom-12 -right-2 select-none font-bold leading-none text-transparent"
+                        style={{
+                          WebkitTextStroke: "1px rgba(255,255,255,0.10)",
+                          fontSize: "clamp(9rem, 20vw, 16rem)",
+                        }}
+                      >
+                        {String(projects.indexOf(p) + 1).padStart(2, "0")}
+                      </span>
+                      <span className="relative text-center font-mono text-2xl uppercase tracking-[0.3em] text-white/80">
+                        {p.title}
                       </span>
                     </div>
                   )}
@@ -175,7 +226,7 @@ export function ProjectCarousel() {
         </div>
       </div>
 
-      <div className="relative w-full lg:flex-1">
+      <div className="relative flex w-full flex-col lg:flex-1 lg:self-stretch">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -183,11 +234,11 @@ export function ProjectCarousel() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative"
+            className="relative flex flex-1 flex-col justify-between gap-8 lg:pb-17"
           >
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -top-16 right-0 select-none font-bold leading-none text-transparent"
+              className="pointer-events-none absolute -top-16 right-0 translate-x-16 select-none font-bold leading-none text-transparent"
               style={{
                 WebkitTextStroke: "1px rgba(255,255,255,0.07)",
                 fontSize: "clamp(10rem, 22vw, 19rem)",
@@ -204,37 +255,49 @@ export function ProjectCarousel() {
               <h3 className="mt-3 text-4xl font-semibold text-white lg:text-5xl">
                 {project.title}
               </h3>
-              <p className="mt-4 text-xl leading-relaxed text-zinc-400">
+              <p className="mt-4 whitespace-pre-line text-xl leading-relaxed text-zinc-400">
                 {project.description}
               </p>
+            </div>
 
-              <div className="mt-8 flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-base text-zinc-300"
-                  >
-                    {tag}
-                  </span>
-                ))}
+            <div className="flex flex-col gap-6">
+              <div>
+                <span className="block text-sm uppercase tracking-widest text-zinc-600">
+                  Tech used
+                </span>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-base text-zinc-300"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {project.links && project.links.length > 0 && (
-                <div className="mt-8 flex gap-6">
-                  {project.links.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-base text-white underline decoration-zinc-600 underline-offset-4 transition-colors duration-200 hover:decoration-white"
-                    >
-                      {link.label}
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  ))}
+                <div>
+                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
+                    Related Links
+                  </span>
+                  <div className="mt-3 flex flex-wrap gap-6">
+                    {project.links.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-base text-white underline decoration-zinc-600 underline-offset-4 transition-colors duration-200 hover:decoration-white"
+                      >
+                        {link.label}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>

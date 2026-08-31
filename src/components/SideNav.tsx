@@ -63,6 +63,7 @@ export function SideNav() {
   const handleChange = useCallback((index: number) => {
     navigatingRef.current = true;
     setActive(index);
+    window.dispatchEvent(new Event("site:navigate"));
 
     if (unlockTimerRef.current != null) {
       window.clearTimeout(unlockTimerRef.current);

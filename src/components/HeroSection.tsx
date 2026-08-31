@@ -38,14 +38,14 @@ export function HeroSection() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-        className="absolute left-10 top-5 z-20 flex items-center gap-4 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"
+        className="absolute left-10 top-6 z-20 flex items-center gap-4 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"
       >
         <span className="text-xs font-medium uppercase tracking-[0.25em] text-zinc-300">
           Find me on
         </span>
         <Socials />
       </motion.div>
-      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-7">
+      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-9">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -121,7 +121,7 @@ export function HeroSection() {
           </motion.div>
         </div>
       </div>
-      <div className="relative z-10 w-full px-24 lg:pr-104 pb-24">
+      <div className="relative z-10 w-full px-24 lg:pr-104 pb-25">
         <h2 className="mb-8 text-xl font-medium uppercase tracking-[0.2em] text-zinc-400">
           My Skills
         </h2>
