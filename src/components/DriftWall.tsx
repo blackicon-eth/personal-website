@@ -15,9 +15,6 @@ export interface DriftWallItem {
   subtitle?: string;
   href?: string;
   background?: string;
-  project?: string;
-  placement?: string;
-  links?: { label: string; url: string }[];
 }
 
 export interface DriftWallProps {
@@ -123,10 +120,17 @@ export function DriftWall({
 
   const columnItems = useMemo<DriftWallItem[][]>(() => {
     const cols: DriftWallItem[][] = Array.from({ length: columns }, () => []);
-    const reversedItems = items.reverse();
-    cols.forEach((col, i) => {
-      i % 2 === 0 ? col.push(...items) : col.push(...reversedItems);
-    });
+    cols.forEach((col) => {
+      let itemsClone: DriftWallItem[] = [];
+      for (let i = 0; i < items.length; i++) {
+        itemsClone[i] = items[i];
+      }
+      while (itemsClone.length) {
+        const randomIndex = Math.floor(Math.random() * itemsClone.length);
+        col.push(itemsClone[randomIndex]);
+        itemsClone.splice(randomIndex, 1);
+      }
+    })
     return cols.map((col) => (col.length ? col : items.slice(0, 1)));
   }, [items, columns]);
 
@@ -316,13 +320,8 @@ export function DriftWall({
     "absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-4 pb-3 pt-10",
     "bg-gradient-to-t from-black/85 via-black/45 to-transparent",
   );
-  const infoOverlayClass = cx(
-    "absolute inset-0 flex flex-col justify-end gap-1.5 bg-zinc-950/85 p-4 opacity-0 transition-opacity duration-300",
-    "group-[.is-active]/tile:opacity-100 group-focus-visible/tile:opacity-100",
-  );
 
   const renderTile = (item: DriftWallItem, id: string, colIndex: number) => {
-    const hasOverlay = Boolean(item.project || item.placement || item.links?.length);
     const inner = (
       <span className={innerClass}>
         <span className="absolute inset-0 flex items-center justify-center p-4">
@@ -343,37 +342,6 @@ export function DriftWall({
             <span className="shrink-0 font-mono text-xs text-zinc-400">{item.subtitle}</span>
           )}
         </span>
-        {hasOverlay && (
-          <span className={infoOverlayClass}>
-            <span className="text-sm font-semibold text-white">
-              {item.title}
-              {item.subtitle && (
-                <span className="ml-2 font-mono text-xs font-normal text-zinc-400">{item.subtitle}</span>
-              )}
-            </span>
-            {item.project && (
-              <span className="text-xs font-medium text-zinc-200">{item.project}</span>
-            )}
-            {item.placement && (
-              <span className="text-xs font-medium text-emerald-300">{item.placement}</span>
-            )}
-            {item.links && item.links.length > 0 && (
-              <span className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
-                {item.links.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="pointer-events-auto text-xs text-white underline decoration-zinc-500 underline-offset-4 transition-colors hover:decoration-white"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </span>
-            )}
-          </span>
-        )}
       </span>
     );
     const commonProps = {
