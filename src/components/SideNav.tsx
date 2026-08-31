@@ -1,16 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { OptionWheel } from "@/components/OptionWheel";
+import { useI18n } from "@/i18n/LocaleProvider";
+import type { Dictionary } from "@/i18n/dictionaries";
 
-const sections = [
-  { id: "hero", label: "Home" },
-  { id: "projects", label: "Projects" },
-  { id: "experience", label: "Experience" },
-  { id: "hackathons", label: "Hackathons" },
-  { id: "contact", label: "Contact" },
-];
+const sectionIds = [
+  "hero",
+  "projects",
+  "experience",
+  "hackathons",
+  "contact",
+] as const;
+
+type SectionId = (typeof sectionIds)[number];
+
+const navKey: Record<SectionId, keyof Dictionary["nav"]> = {
+  hero: "home",
+  projects: "projects",
+  experience: "experience",
+  hackathons: "hackathons",
+  contact: "contact",
+};
 
 export function SideNav() {
+  const { t } = useI18n();
   const [active, setActive] = useState(0);
   const navigatingRef = useRef(false);
   const unlockTimerRef = useRef<number | null>(null);
@@ -21,7 +34,7 @@ export function SideNav() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             if (navigatingRef.current) return;
-            const idx = sections.findIndex((s) => s.id === entry.target.id);
+            const idx = sectionIds.findIndex((id) => id === entry.target.id);
             if (idx >= 0) setActive(idx);
           }
         });
@@ -29,8 +42,8 @@ export function SideNav() {
       { rootMargin: "-50% 0px -50% 0px", threshold: 0 },
     );
 
-    sections.forEach((s) => {
-      const el = document.getElementById(s.id);
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
@@ -74,7 +87,7 @@ export function SideNav() {
     }, 1600);
 
     document
-      .getElementById(sections[index].id)
+      .getElementById(sectionIds[index])
       ?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
@@ -86,7 +99,7 @@ export function SideNav() {
       className="fixed inset-y-0 right-0 z-50 hidden w-96 lg:block"
     >
       <OptionWheel
-        items={sections.map((s) => s.label)}
+        items={sectionIds.map((id) => t.nav[navKey[id]])}
         selected={active}
         onChange={handleChange}
         onSelect={handleChange}

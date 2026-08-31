@@ -2,12 +2,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import type { PanInfo } from "motion/react";
 import { projects } from "@/data/projects";
+import { useI18n } from "@/i18n/LocaleProvider";
 
 const SPRING = { type: "spring", stiffness: 300, damping: 30 } as const;
 const AUTOPLAY_DELAY = 5000;
 const MANUAL_PAUSE_MS = 3 * 60 * 1000;
 
 export function ProjectCarousel() {
+  const { t } = useI18n();
   const [width, setWidth] = useState(0);
   const [position, setPosition] = useState(1);
   const [paused, setPaused] = useState(false);
@@ -206,7 +208,7 @@ export function ProjectCarousel() {
               <button
                 key={i}
                 type="button"
-                aria-label={`Go to project ${i + 1}`}
+                aria-label={`${t.projects.goToProject} ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
                   i === activeIndex
@@ -219,7 +221,7 @@ export function ProjectCarousel() {
           <div className="flex gap-2">
             <button
               type="button"
-              aria-label="Previous project"
+              aria-label={t.projects.previous}
               onClick={prev}
               className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
             >
@@ -229,7 +231,7 @@ export function ProjectCarousel() {
             </button>
             <button
               type="button"
-              aria-label="Next project"
+              aria-label={t.projects.next}
               onClick={next}
               className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
             >
@@ -271,14 +273,14 @@ export function ProjectCarousel() {
                 {project.title}
               </h3>
               <p className="mt-4 whitespace-pre-line text-xl leading-relaxed text-zinc-400">
-                {project.description}
+                {t.projects.items[project.id].description}
               </p>
             </div>
 
             <div className="flex flex-col gap-6">
               <div>
                 <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                  Tech used
+                  {t.projects.techUsed}
                 </span>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
@@ -295,7 +297,7 @@ export function ProjectCarousel() {
               {project.links && project.links.length > 0 && (
                 <div>
                   <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                    Related Links
+                    {t.projects.relatedLinks}
                   </span>
                   <div className="mt-3 flex flex-wrap gap-6">
                     {project.links.map((link) => (
@@ -306,7 +308,7 @@ export function ProjectCarousel() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-base text-white underline decoration-zinc-600 underline-offset-4 transition-colors duration-200 hover:decoration-white"
                       >
-                        {link.label}
+                        {link.labelKey ? t.projects.links[link.labelKey] : link.label}
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                           <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

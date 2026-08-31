@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { motion } from "motion/react";
 import { experience } from "@/data/experience";
+import { useI18n } from "@/i18n/LocaleProvider";
 
 function linkify(text: string) {
   return text.split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
@@ -99,6 +100,7 @@ function Entry({
 }
 
 export function ExperienceSection() {
+  const { t } = useI18n();
   return (
     <section
       id="experience"
@@ -107,9 +109,21 @@ export function ExperienceSection() {
       <div className="w-full px-24 lg:pr-[26rem]">
         <div className="relative flex flex-col gap-24">
           <div className="absolute bottom-0 left-4 top-0 w-px bg-white/10 lg:left-1/2 lg:-translate-x-1/2" />
-          {experience.map((item, i) => (
-            <Entry key={item.company} index={i} {...item} />
-          ))}
+          {experience.map((item, i) => {
+            const content = t.experience.items[item.id];
+            return (
+              <Entry
+                key={item.company}
+                index={i}
+                company={item.company}
+                role={content.role}
+                period={content.period}
+                description={content.description}
+                image={item.image}
+                gradient={item.gradient}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

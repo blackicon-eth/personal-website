@@ -4,10 +4,12 @@ import { ShinyText } from "@/components/ShinyText";
 import { SpecularButton } from "@/components/SpecularButton";
 import { Socials } from "@/components/Socials";
 import { GradientWaves } from "@/components/GradientWaves";
+import { useI18n } from "@/i18n/LocaleProvider";
 
 const EMAIL = "verdecchimattia60@gmail.com";
 
 export function ContactSection() {
+  const { t } = useI18n();
   return (
     <section
       id="contact"
@@ -44,7 +46,7 @@ export function ContactSection() {
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           className="font-mono text-base uppercase tracking-[0.3em] text-zinc-500"
         >
-          Get in touch
+          {t.contact.eyebrow}
         </motion.p>
 
         <motion.h2
@@ -54,9 +56,9 @@ export function ContactSection() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
           className="mt-6 text-6xl font-bold leading-tight md:text-8xl"
         >
-          <ShinyText text="Let's build" speed={3} />
+          <ShinyText text={t.contact.titleLine1} speed={3} />
           <br />
-          <ShinyText text="something together" speed={3} />
+          <ShinyText text={t.contact.titleLine2} speed={3} />
         </motion.h2>
 
         <motion.p
@@ -66,9 +68,9 @@ export function ContactSection() {
           transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-zinc-400"
         >
-          Have a project in mind or just want to say hi?
+          {t.contact.bodyLine1}
           <br />
-          My inbox is always open.
+          {t.contact.bodyLine2}
         </motion.p>
 
         <motion.div
