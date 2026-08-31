@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { FaLocationDot } from "react-icons/fa6";
 
 function getRomeOffsetHours(date: Date): number {
   const dtf = new Intl.DateTimeFormat("en-US", {
@@ -44,6 +45,7 @@ export function LocationPill() {
       transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
       className="absolute right-10 top-6 z-20 flex items-center gap-2.5 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"
     >
+      <FaLocationDot className="h-4.5 w-4.5 text-zinc-400" />
       <span className="text-sm font-medium text-zinc-300">Rome, Italy</span>
       <span className="h-1 w-1 rounded-full bg-zinc-500" />
       <span className="text-sm font-medium text-zinc-300">GMT+{offset}</span>
