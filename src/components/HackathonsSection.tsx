@@ -53,6 +53,7 @@ export function HackathonsSection() {
         title: h.event,
         subtitle: h.year,
         background: h.background,
+        logoTranslateY: h.logoTranslateY,
         href: h.url,
       })),
     [],

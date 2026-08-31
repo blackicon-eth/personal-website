@@ -3,6 +3,7 @@ export interface Hackathon {
   year: string;
   logo?: string;
   background?: string;
+  logoTranslateY?: number;
   url?: string;
 }
 
@@ -12,30 +13,35 @@ export const hackathons: Hackathon[] = [
     year: "2026",
     logo: "/hackathons/logos/ethglobal-cannes.png",
     url: "https://ethglobal.com/showcase/kondor-4bvt5",
+    logoTranslateY: -14,
   },
   {
     event: "ETHGlobal Buenos Aires",
     year: "2025",
     logo: "/hackathons/logos/ethglobal-buenos-aires.png",
     url: "https://ethglobal.com/showcase/ronda-7ck82",
+    logoTranslateY: -14,
   },
   {
     event: "ETHRome 2025",
     year: "2025",
     logo: "/hackathons/logos/ethrome.png",
     url: "https://taikai.network/ethrome/hackathons/2025/projects/cmgwaj2qm019p8697rref0act/idea",
+    logoTranslateY: -12,
   },
   {
     event: "ETHGlobal Prague",
     year: "2025",
     logo: "/hackathons/logos/ethglobal-prague.png",
     url: "https://ethglobal.com/showcase/remote-913v9",
+    logoTranslateY: -12,
   },
   {
     event: "ETHGlobal Cannes",
     year: "2025",
     logo: "/hackathons/logos/ethglobal-cannes.png",
     url: "https://ethglobal.com/showcase/substream-msjk1",
+    logoTranslateY: -14,
   },
   {
     event: "ETHDenver",
@@ -43,6 +49,7 @@ export const hackathons: Hackathon[] = [
     logo: "/hackathons/logos/ethdenver.png",
     background: "#ffffff",
     url: "https://devfolio.co/projects/trustnet-3d2e",
+    logoTranslateY: -8,
   },
   {
     event: "ETHBucharest",
@@ -50,18 +57,21 @@ export const hackathons: Hackathon[] = [
     logo: "/hackathons/logos/ethbucharest-2025.png",
     background: "#ffffff",
     url: "https://dorahacks.io/buidl/25568/",
+    logoTranslateY: -12,
   },
   {
     event: "ETHGlobal Bangkok",
     year: "2024",
     logo: "/hackathons/logos/ethglobal-bangkok.png",
     url: "https://ethglobal.com/showcase/malu-bnppc",
+    logoTranslateY: -14,
   },
   {
     event: "ETHRome",
     year: "2024",
     logo: "/hackathons/logos/ethrome.png",
     url: "https://taikai.network/ethrome/hackathons/ethrome-24/projects/cm1vw2ahy03o8148whytxec1k/idea",
+    logoTranslateY: -12,
   },
   {
     event: "ETHWarsaw",
@@ -69,18 +79,21 @@ export const hackathons: Hackathon[] = [
     logo: "/hackathons/logos/ethwarsaw.jpg",
     background: "#ffffff",
     url: "https://devfolio.co/projects/cherry-1d97",
+    logoTranslateY: -8,
   },
   {
     event: "ETHGlobal Brussels",
     year: "2024",
     logo: "/hackathons/logos/ethglobal-brussels.png",
     url: "https://ethglobal.com/showcase/fhellow-yyywd",
+    logoTranslateY: -8,
   },
   {
     event: "ETHPrague",
     year: "2024",
     logo: "/hackathons/logos/ethprague.jpeg",
     url: "https://devfolio.co/projects/captain-happy-hook-962a",
+    logoTranslateY: -8,
   },
   {
     event: "ETHBucharest",
@@ -88,11 +101,13 @@ export const hackathons: Hackathon[] = [
     logo: "/hackathons/logos/ethbucharest-2024.png",
     background: "#ffffff",
     url: "https://dorahacks.io/buidl/10863",
+    logoTranslateY: -12,
   },
   {
     event: "ETHRome",
     year: "2023",
     logo: "/hackathons/logos/ethrome.png",
     url: "https://taikai.network/ethrome/hackathons/ethrome-23/projects/clnevppyk002cy901laxfge5i/idea",
+    logoTranslateY: -12,
   },
 ];
