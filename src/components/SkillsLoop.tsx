@@ -111,7 +111,7 @@ export function SkillsLoop() {
   return (
     <LogoLoop
       logos={logos}
-      speed={55}
+      speed={80}
       direction="left"
       logoHeight={64}
       gap={64}

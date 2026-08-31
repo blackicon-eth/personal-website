@@ -13,6 +13,7 @@ export function ProjectCarousel() {
   const [paused, setPaused] = useState(false);
   const [manualPaused, setManualPaused] = useState(false);
   const [isJumping, setIsJumping] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const x = useMotionValue(0);
   const viewportRef = useRef<HTMLDivElement>(null);
   const manualTimerRef = useRef<number | null>(null);
@@ -81,17 +82,28 @@ export function ProjectCarousel() {
   const effectiveTransition = isJumping ? { duration: 0 } : SPRING;
 
   const handleAnimationComplete = () => {
-    if (itemsForRender.length <= 1) return;
+    if (itemsForRender.length <= 1) {
+      setIsAnimating(false);
+      return;
+    }
     if (position === lastCloneIndex) {
       setIsJumping(true);
       setPosition(1);
       x.set(-trackItemOffset);
-      requestAnimationFrame(() => setIsJumping(false));
+      requestAnimationFrame(() => {
+        setIsJumping(false);
+        setIsAnimating(false);
+      });
     } else if (position === 0) {
       setIsJumping(true);
       setPosition(projects.length);
       x.set(-projects.length * trackItemOffset);
-      requestAnimationFrame(() => setIsJumping(false));
+      requestAnimationFrame(() => {
+        setIsJumping(false);
+        setIsAnimating(false);
+      });
+    } else {
+      setIsAnimating(false);
     }
   };
 
@@ -138,12 +150,15 @@ export function ProjectCarousel() {
           {width > 0 && (
             <motion.div
               className="flex h-full cursor-grab active:cursor-grabbing"
-              drag="x"
+              drag={isAnimating ? false : "x"}
               dragElastic={0.15}
+              dragMomentum={false}
+              dragConstraints={{ left: -lastCloneIndex * trackItemOffset, right: 0 }}
               onDragEnd={handleDragEnd}
               initial={false}
               animate={{ x: -(position * trackItemOffset) }}
               transition={effectiveTransition}
+              onAnimationStart={() => setIsAnimating(true)}
               onAnimationComplete={handleAnimationComplete}
             >
               {itemsForRender.map((p, i) => (
