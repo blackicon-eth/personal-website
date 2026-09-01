@@ -77,10 +77,8 @@ export const en = {
   skills: {
     whereLearned: "Where did I learn this?",
     items: {
-      TypeScript:
-        "In hackathons and perfected while working in Builders Garden",
-      JavaScript:
-        "In University, hackathons and perfected while working in Builders Garden",
+      TypeScript: "In hackathons and perfected while working in Builders Garden",
+      JavaScript: "In University, hackathons and perfected while working in Builders Garden",
       Python: "In University and perfected while working in Start&Go",
       Java: "In University",
       Scala: "In University",
@@ -91,10 +89,8 @@ export const en = {
       CSS: "In University, hackathons and perfected while working in Builders Garden",
       React: "In hackathons and perfected while working in Builders Garden",
       "Next.js": "In hackathons and perfected while working in Builders Garden",
-      "Node.js":
-        "In hackathons and perfected while working in Builders Garden and Start&Go",
-      "Tailwind CSS":
-        "In hackathons and perfected while working in Builders Garden",
+      "Node.js": "In hackathons and perfected while working in Builders Garden and Start&Go",
+      "Tailwind CSS": "In hackathons and perfected while working in Builders Garden",
       Vite: "Self-taught for personal projects and perfected while working as a freelance",
       GraphQL: "While working in Builders Garden",
       "Drizzle ORM": "While working in Builders Garden",
@@ -102,13 +98,11 @@ export const en = {
       "ethers.js": "During hackathons and perfected while working in Builders Garden",
       Wagmi: "During hackathons and perfected while working in Builders Garden",
       PostgreSQL: "In University and perfected while working in Start&Go",
-      Redis:
-        "While working in Builders Garden and used in many personal projects",
+      Redis: "While working in Builders Garden and used in many personal projects",
       IPFS: "During hackathons and perfected while working in Builders Garden",
       Docker: "While working in Start&Go and used in some personal projects",
       Linux: "In University and kept using it since then",
-      Vercel:
-        "While working in Builders Garden and used in many personal projects",
+      Vercel: "While working in Builders Garden and used in many personal projects",
       Git: "At Start&Go and kept using it since then",
       Bash: "In University and kept using it since then",
       "AI coding": "In hackathons and perfected while working in Builders Garden",
@@ -120,5 +114,10 @@ export const en = {
     titleLine2: "something together",
     bodyLine1: "Have a project in mind or just want to say hi?",
     bodyLine2: "My inbox is always open.",
+  },
+  mobile: {
+    greeting: "Hey there!",
+    title: "This mobile version is under construction!",
+    description: "I'm still polishing the mobile experience. Until then, you can find me here:",
   },
 };

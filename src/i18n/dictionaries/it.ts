@@ -117,4 +117,10 @@ export const it: Dictionary = {
     bodyLine1: "Hai un progetto in mente o vuoi solo salutare?",
     bodyLine2: "La mia casella è sempre aperta.",
   },
+  mobile: {
+    greeting: "Ciao!",
+    title: "In costruzione",
+    description:
+      "Per ora questo sito dà il meglio su laptop o desktop — sto ancora rifinendo l'esperienza mobile. Nel frattempo, passa a salutarmi:",
+  },
 };
