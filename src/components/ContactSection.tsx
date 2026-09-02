@@ -45,7 +45,7 @@ export function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="font-mono text-base uppercase tracking-[0.3em] text-zinc-500"
+          className="font-mono text-[clamp(0.7rem,0.8vw,1rem)] uppercase tracking-[0.3em] text-zinc-500"
         >
           <LocaleText>{t.contact.eyebrow}</LocaleText>
         </motion.p>
@@ -55,7 +55,7 @@ export function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mt-6 text-6xl font-bold leading-tight md:text-8xl"
+          className="mt-6 text-[clamp(3rem,5vw,6rem)] font-bold leading-tight"
         >
           <LocaleText block>
             <ShinyText text={t.contact.titleLine1} speed={3} />
@@ -69,7 +69,7 @@ export function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-          className="mx-auto mt-6 max-w-2xl text-xl leading-relaxed text-zinc-400"
+          className="mx-auto mt-6 max-w-2xl text-[clamp(1rem,1.35vw,1.25rem)] leading-relaxed text-zinc-400"
         >
           <LocaleText block>
             {t.contact.bodyLine1}
@@ -104,7 +104,7 @@ export function ContactSection() {
               window.location.href = `mailto:${EMAIL}`;
             }}
           >
-            <span className="inline-flex items-center gap-3">
+            <span className="inline-flex items-center gap-3 text-[clamp(0.9rem,1vw,1.15rem)]">
               <FaEnvelope className="h-5 w-5" />
               {EMAIL}
             </span>
