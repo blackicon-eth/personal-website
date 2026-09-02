@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { motion } from "motion/react";
 import { experience } from "@/data/experience";
+import { ExperienceImage } from "@/components/ExperienceImage";
 import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
@@ -29,7 +30,7 @@ function Entry({
   period,
   description,
   image,
-  gradient,
+  background,
 }: {
   index: number;
   company: string;
@@ -37,7 +38,7 @@ function Entry({
   period: string;
   description: string;
   image?: string;
-  gradient: string;
+  background: string;
 }) {
   const reversed = index % 2 === 1;
 
@@ -48,25 +49,25 @@ function Entry({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-        className={`w-full ${
-          reversed
-            ? "lg:col-start-3 lg:justify-self-start"
-            : "lg:col-start-1 lg:justify-self-end"
-        }`}
+        className={`w-full ${reversed
+          ? "lg:col-start-3 lg:justify-self-start"
+          : "lg:col-start-1 lg:justify-self-end"
+          }`}
       >
         <div className="overflow-hidden rounded-2xl border border-white/10">
           {image ? (
-            <img
+            <ExperienceImage
               src={image}
               alt={company}
-              className="aspect-[16/8] w-full object-cover"
+              background={background}
+              aspectRatio="clamp(1, calc(100vw / 400px - 1.75), 2)"
             />
           ) : (
             <div
-              className="flex aspect-[16/8] items-center justify-center"
-              style={{ background: gradient }}
+              className="flex aspect-16/8 items-center justify-center"
+                style={{ background }}
             >
-              <span className="font-mono text-sm uppercase tracking-[0.3em] text-white/60">
+              <span className="font-mono text-[clamp(0.7rem,0.8vw,0.875rem)] uppercase tracking-[0.3em] text-white/60">
                 {company}
               </span>
             </div>
@@ -83,18 +84,17 @@ function Entry({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-        className={`relative ${
-          reversed ? "lg:col-start-1 lg:row-start-1" : "lg:col-start-3"
-        }`}
+        className={`relative min-w-0 ${reversed ? "lg:col-start-1 lg:row-start-1" : "lg:col-start-3"
+          }`}
       >
-        <span className="font-mono text-sm uppercase tracking-widest text-zinc-500">
+        <span className="font-mono text-[clamp(0.7rem,0.8vw,0.875rem)] uppercase tracking-widest text-zinc-500">
           <LocaleText>{period}</LocaleText>
         </span>
-        <h3 className="mt-3 text-3xl font-semibold text-white">{company}</h3>
-        <p className="mt-1 text-lg text-zinc-300">
+        <h3 className="mt-1.5 text-[clamp(1.5rem,2.1vw,1.875rem)] font-semibold text-white">{company}</h3>
+        <p className="text-[clamp(1rem,1.25vw,1.125rem)] text-zinc-300">
           <LocaleText>{role}</LocaleText>
         </p>
-        <p className="mt-4 text-lg leading-relaxed text-zinc-400">
+        <p className="mt-3.5 text-[clamp(1rem,1.25vw,1.125rem)] leading-relaxed text-zinc-400">
           <LocaleText block>{linkify(description)}</LocaleText>
         </p>
       </motion.div>
@@ -109,7 +109,7 @@ export function ExperienceSection() {
       id="experience"
       className="flex min-h-screen w-full flex-col justify-center py-24"
     >
-      <div className="w-full px-24 lg:pr-[26rem]">
+      <div className="w-full px-24 lg:pr-80 xl:pr-90 2xl:pr-104">
         <div className="relative flex flex-col gap-24">
           <div className="absolute bottom-0 left-4 top-0 w-px bg-white/10 lg:left-1/2 lg:-translate-x-1/2" />
           {experience.map((item, i) => {
@@ -123,7 +123,7 @@ export function ExperienceSection() {
                 period={content.period}
                 description={content.description}
                 image={item.image}
-                gradient={item.gradient}
+                background={item.background}
               />
             );
           })}
