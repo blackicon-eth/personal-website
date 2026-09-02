@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-projects: 1700px;
+}
+
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;

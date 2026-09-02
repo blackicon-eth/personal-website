@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useMotionValue } from "motion/react";
 import type { PanInfo } from "motion/react";
 import { projects } from "@/data/projects";
 import { LocaleText } from "@/components/LocaleText";
+import { ProjectMeta } from "@/components/ProjectMeta";
 import { useI18n } from "@/i18n/LocaleProvider";
 
 const SPRING = { type: "spring", stiffness: 300, damping: 30 } as const;
@@ -141,188 +142,169 @@ export function ProjectCarousel() {
 
   return (
     <div
-      className="flex flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-20"
+      className="flex flex-col"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="relative w-full lg:w-[55%] shrink-0">
-        <div
-          ref={viewportRef}
-          className="relative aspect-square overflow-hidden rounded-2xl border border-white/10"
-        >
-          {width > 0 && (
-            <motion.div
-              className="flex h-full cursor-grab active:cursor-grabbing"
-              drag={isAnimating ? false : "x"}
-              dragElastic={0.15}
-              dragMomentum={false}
-              dragConstraints={{ left: -lastCloneIndex * trackItemOffset, right: 0 }}
-              onDragEnd={handleDragEnd}
-              initial={false}
-              animate={{ x: -(position * trackItemOffset) }}
-              transition={effectiveTransition}
-              onAnimationStart={() => setIsAnimating(true)}
-              onAnimationComplete={handleAnimationComplete}
+      <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:gap-20">
+        <div className="flex w-full flex-col gap-8 lg:w-[55%] lg:shrink-0">
+          <div className="relative w-full">
+            <div
+              ref={viewportRef}
+              className="relative aspect-square overflow-hidden rounded-2xl border border-white/10"
             >
-              {itemsForRender.map((p, i) => (
-                <div
-                  key={`${p.title}-${i}`}
-                  className="h-full shrink-0 select-none"
-                  style={{ width }}
+              {width > 0 && (
+                <motion.div
+                  className="flex h-full cursor-grab active:cursor-grabbing"
+                  drag={isAnimating ? false : "x"}
+                  dragElastic={0.15}
+                  dragMomentum={false}
+                  dragConstraints={{ left: -lastCloneIndex * trackItemOffset, right: 0 }}
+                  onDragEnd={handleDragEnd}
+                  initial={false}
+                  animate={{ x: -(position * trackItemOffset) }}
+                  transition={effectiveTransition}
+                  onAnimationStart={() => setIsAnimating(true)}
+                  onAnimationComplete={handleAnimationComplete}
                 >
-                  {p.image ? (
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      draggable={false}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
+                  {itemsForRender.map((p, i) => (
                     <div
-                      className="relative flex h-full w-full items-center justify-center overflow-hidden p-8"
-                      style={{ background: p.gradient }}
+                      key={`${p.title}-${i}`}
+                      className="h-full shrink-0 select-none"
+                      style={{ width }}
                     >
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute -bottom-12 -right-2 select-none font-bold leading-none text-transparent"
-                        style={{
-                          WebkitTextStroke: "1px rgba(255,255,255,0.10)",
-                          fontSize: "clamp(9rem, 20vw, 16rem)",
-                        }}
-                      >
-                        {String(projects.indexOf(p) + 1).padStart(2, "0")}
-                      </span>
-                      <span className="relative text-center font-mono text-2xl uppercase tracking-[0.3em] text-white/80">
-                        {p.title}
-                      </span>
+                      {p.image ? (
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          draggable={false}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div
+                          className="relative flex h-full w-full items-center justify-center overflow-hidden p-8"
+                          style={{ background: p.gradient }}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="pointer-events-none absolute -bottom-12 -right-2 select-none font-bold leading-none text-transparent"
+                            style={{
+                              WebkitTextStroke: "1px rgba(255,255,255,0.10)",
+                              fontSize: "clamp(9rem, 20vw, 16rem)",
+                            }}
+                          >
+                            {String(projects.indexOf(p) + 1).padStart(2, "0")}
+                          </span>
+                          <span className="relative text-center font-mono text-[clamp(1rem,2vw,1.5rem)] uppercase tracking-[0.3em] text-white/80">
+                            {p.title}
+                          </span>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
-            </motion.div>
-          )}
-        </div>
-
-        <div className="mt-5 flex items-center justify-between">
-          <div className="flex gap-2">
-            {projects.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                aria-label={`${t.projects.goToProject} ${i + 1}`}
-                onClick={() => goTo(i)}
-                className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  i === activeIndex
-                    ? "w-7 bg-white"
-                    : "w-2.5 bg-white/25 hover:bg-white/50"
-                }`}
-              />
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              aria-label={t.projects.previous}
-              onClick={prev}
-              className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              aria-label={t.projects.next}
-              onClick={next}
-              className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative flex w-full flex-col lg:flex-1 lg:self-stretch">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative flex flex-1 flex-col justify-between gap-8 lg:pb-17"
-          >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-16 right-0 translate-x-16 select-none font-bold leading-none text-transparent"
-              style={{
-                WebkitTextStroke: "1px rgba(255,255,255,0.07)",
-                fontSize: "clamp(10rem, 22vw, 19rem)",
-              }}
-            >
-              {String(activeIndex + 1).padStart(2, "0")}
-            </span>
-
-            <div className="relative">
-              <span className="font-mono text-base text-zinc-500">
-                {String(activeIndex + 1).padStart(2, "0")} /{" "}
-                {String(projects.length).padStart(2, "0")}
-              </span>
-              <h3 className="mt-3 text-4xl font-semibold text-white lg:text-5xl">
-                {project.title}
-              </h3>
-              <p className="mt-4 whitespace-pre-line text-xl leading-relaxed text-zinc-400">
-                <LocaleText block>
-                  {t.projects.items[project.id].description}
-                </LocaleText>
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-6">
-              <div>
-                <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                  <LocaleText>{t.projects.techUsed}</LocaleText>
-                </span>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-base text-zinc-300"
-                    >
-                      {tag}
-                    </span>
                   ))}
-                </div>
-              </div>
-
-              {project.links && project.links.length > 0 && (
-                <div>
-                  <span className="block text-sm uppercase tracking-widest text-zinc-600">
-                    <LocaleText>{t.projects.relatedLinks}</LocaleText>
-                  </span>
-                  <div className="mt-3 flex flex-wrap gap-6">
-                    {project.links.map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-base text-white underline decoration-zinc-600 underline-offset-4 transition-colors duration-200 hover:decoration-white"
-                      >
-                        {link.labelKey ? t.projects.links[link.labelKey] : link.label}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                          <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </a>
-                    ))}
-                  </div>
-                </div>
+                </motion.div>
               )}
             </div>
-          </motion.div>
-        </AnimatePresence>
+
+            <div className="mt-5 flex items-center justify-between">
+              <div className="flex gap-2">
+                {projects.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`${t.projects.goToProject} ${i + 1}`}
+                    onClick={() => goTo(i)}
+                    className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${i === activeIndex
+                      ? "w-7 bg-white"
+                      : "w-2.5 bg-white/25 hover:bg-white/50"
+                      }`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  aria-label={t.projects.previous}
+                  onClick={prev}
+                  className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  aria-label={t.projects.next}
+                  onClick={next}
+                  className="flex size-12 items-center justify-center rounded-full border border-white/15 text-white transition-colors duration-200 hover:bg-white/10 cursor-pointer"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full projects:hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <ProjectMeta project={project} />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        <div className="relative flex min-w-0 w-full flex-col lg:flex-1 lg:self-stretch">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative flex flex-1 flex-col justify-between gap-8 pb-0 2xl:pb-17"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute select-none font-bold leading-none text-transparent"
+                style={{
+                  WebkitTextStroke: "1px rgba(255,255,255,0.07)",
+                  right: "clamp(-4rem, calc(-0.78rem - 2.68vw), -2.5rem)",
+                  top: "clamp(-4rem, calc(1.36rem - 4.46vw), -1.5rem)",
+                  fontSize: "clamp(8rem, calc(21.67vw - 7rem), 19rem)",
+                }}
+              >
+                {String(activeIndex + 1).padStart(2, "0")}
+              </span>
+
+              <div className="flex-1 flex-col justify-start items-start w-full shrink-0">
+                <span className="font-mono text-base text-zinc-500">
+                  {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                  {String(projects.length).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 whitespace-nowrap text-[clamp(1.75rem,3vw,3rem)] font-semibold leading-[1.1] text-white">
+                  {project.title}
+                </h3>
+                <p className="mt-4 whitespace-pre-line text-[clamp(1rem,1.35vw,1.25rem)] xl:leading-relaxed  text-zinc-400">
+                  <LocaleText block>
+                    {t.projects.items[project.id].description}
+                  </LocaleText>
+                </p>
+              </div>
+
+              <div className="hidden projects:block">
+                <ProjectMeta project={project} />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
