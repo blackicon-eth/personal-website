@@ -216,7 +216,7 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
       {portalPopover && openItem && typeof document !== "undefined" && createPortal(
         <div
           ref={popoverRef}
-          className="pointer-events-none fixed z-[100] w-max max-w-[min(320px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-full rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl"
+          className="pointer-events-none fixed z-100 w-max max-w-[min(320px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-full rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl"
           style={{ left: openItem.rect.left + openItem.rect.width / 2, top: openItem.rect.top - 20 }}
         >
           <p className="text-[17px] font-semibold text-white">{t.skills.whereLearned}</p>

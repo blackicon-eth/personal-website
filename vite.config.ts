@@ -11,6 +11,6 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    allowedHosts: ["mattiaverdecchi.dev"],
+    allowedHosts: ["mattiaverdecchi.dev", "pippo.blackicon.uk"],
   },
 });
