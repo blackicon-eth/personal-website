@@ -51,12 +51,12 @@ export function FlipAvatar({ onToggle }: FlipAvatarProps) {
   };
 
   return (
-    <div style={{ perspective: 1200 }} className="shrink-0">
+    <div style={{ perspective: 1200 }} className="w-[clamp(14rem,26vw,23.5rem)] aspect-square">
       <motion.button
         onClick={handleClick}
         animate={{ rotateY: rotation }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-        className="size-96 relative rounded-full cursor-pointer ring-1 ring-white/20 ring-offset-4 ring-offset-zinc-950 select-none outline-none focus:outline-none"
+        className="size-full relative rounded-full cursor-pointer ring-1 ring-white/20 ring-offset-4 ring-offset-zinc-950 select-none outline-none focus:outline-none"
         style={{ transformStyle: "preserve-3d", WebkitTapHighlightColor: "transparent" }}
       >
         <div

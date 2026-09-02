@@ -24,6 +24,8 @@ export interface StrokeTextProps {
   fontSize?: number;
   fontWeight?: number | string;
   letterSpacing?: number;
+  padding?: number;
+  referenceText?: string;
   reverse?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -52,15 +54,19 @@ export function StrokeText({
   fontSize = 128,
   fontWeight = 800,
   letterSpacing = -4,
+  padding = 0.1,
+  referenceText,
   reverse = false,
   className = "",
   style = {},
 }: StrokeTextProps) {
   const rootRef = useRef<HTMLSpanElement | null>(null);
   const strokeTextRef = useRef<SVGTextElement | null>(null);
+  const referenceTextRef = useRef<SVGTextElement | null>(null);
   const wipeRectRef = useRef<SVGRectElement | null>(null);
 
   const [box, setBox] = useState<StrokeTextBox | null>(null);
+  const [referenceBox, setReferenceBox] = useState<StrokeTextBox | null>(null);
 
   const rawId = useId();
   const wipeId = `stroke-text-wipe-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -94,7 +100,7 @@ export function StrokeText({
       }
       if (!bbox || !bbox.width) return;
 
-      const pad = Math.max(Number(strokeWidth) || 1, fontSize * 0.1);
+      const pad = Math.max(Number(strokeWidth) || 1, fontSize * padding);
       const next = {
         x: bbox.x - pad,
         y: bbox.y - pad,
@@ -104,23 +110,40 @@ export function StrokeText({
 
       setBox((prev) =>
         prev &&
-        Math.abs(prev.x - next.x) < 0.5 &&
-        Math.abs(prev.width - next.width) < 0.5 &&
-        Math.abs(prev.y - next.y) < 0.5
+          Math.abs(prev.x - next.x) < 0.5 &&
+          Math.abs(prev.width - next.width) < 0.5 &&
+          Math.abs(prev.y - next.y) < 0.5
           ? prev
           : next,
       );
+
+      if (referenceTextRef.current && referenceText !== text) {
+        let referenceBbox: DOMRect | undefined;
+        try {
+          referenceBbox = referenceTextRef.current.getBBox();
+        } catch {
+          return;
+        }
+        if (referenceBbox?.width) {
+          setReferenceBox({
+            x: referenceBbox.x - pad,
+            y: referenceBbox.y - pad,
+            width: referenceBbox.width + pad * 2,
+            height: referenceBbox.height + pad * 2,
+          });
+        }
+      }
     };
 
     measure();
     if (typeof document !== "undefined" && document.fonts?.ready) {
-      document.fonts.ready.then(measure).catch(() => {});
+      document.fonts.ready.then(measure).catch(() => { });
     }
 
     return () => {
       cancelled = true;
     };
-  }, [characters, fontSize, fontWeight, letterSpacing, strokeWidth]);
+  }, [characters, fontSize, fontWeight, letterSpacing, padding, referenceText, strokeWidth, text]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -244,20 +267,40 @@ export function StrokeText({
   }, [box, dash, drawDuration, fillDelay, stagger, ease, trigger, fillMode, reverse]);
 
   const viewBox = box
-    ? `${box.x} ${box.y} ${box.width} ${box.height}`
+    ? `${box.x} ${box.y} ${Math.max(box.width, referenceBox?.width ?? 0)} ${Math.max(box.height, referenceBox?.height ?? 0)}`
     : `0 ${-fontSize} 600 ${fontSize * 1.3}`;
+  const contentWidth = box
+    ? Math.max(box.width, referenceBox?.width ?? 0)
+    : undefined;
 
   return (
     <span
       ref={rootRef}
-      className={`block w-full leading-[0] ${trigger === "hover" ? "cursor-pointer" : ""} ${className}`.trim()}
+      className={`block w-full leading-0 ${trigger === "hover" ? "cursor-pointer" : ""} ${className}`.trim()}
       style={style}
       role="img"
       aria-label={String(text ?? "")}
     >
+      {referenceText && referenceText !== text && (
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-0 h-px w-px overflow-visible opacity-0"
+        >
+          <text ref={referenceTextRef} x="0" y="0" style={fontStyle}>
+            {referenceText}
+          </text>
+        </svg>
+      )}
       <svg
-        className="block w-full"
-        style={{ height: `${Math.round(fontSize * 1.3)}px` }}
+        className="block h-auto max-w-full"
+        style={
+          contentWidth
+            ? {
+              width: `${contentWidth}px`,
+              maxWidth: "min(100%, clamp(24rem, 40vw, 48rem))",
+            }
+            : { width: "100%" }
+        }
         viewBox={viewBox}
         preserveAspectRatio="xMinYMid meet"
         aria-hidden="true"

@@ -54,12 +54,12 @@ export function HeroSection() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
-        className="absolute right-10 top-6 z-[60] flex items-center gap-3"
+        className="absolute right-10 top-6 z-60 flex items-center gap-3"
       >
         <LocationPill />
         <LocaleSwitcher />
       </motion.div>
-      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-104 pt-9">
+      <div className="relative z-10 flex w-full flex-1 items-center px-24 lg:pr-54 xl:pr-76 2xl:pr-104 pt-9">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -70,8 +70,9 @@ export function HeroSection() {
             onToggle={handleToggle}
           />
         </motion.div>
-        <div className="flex-1 text-left shrink-0 pl-4">
+        <div className="flex justify-center items-start flex-col text-left pl-4">
           <motion.div
+            className="w-full"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
@@ -79,7 +80,7 @@ export function HeroSection() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={side}
-                className="min-h-32"
+                className="w-full"
                 initial={{ opacity: 0, y: 12, filter: "blur(4px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: -12, filter: "blur(4px)" }}
@@ -93,9 +94,11 @@ export function HeroSection() {
                   drawDuration={1.4}
                   fillDelay={0.0}
                   stagger={0.05}
-                  fontSize={96}
+                  fontSize={86}
                   fontWeight={700}
                   letterSpacing={-2}
+                  padding={0.04}
+                  referenceText={names[0]}
                 />
               </motion.div>
             </AnimatePresence>
@@ -104,7 +107,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-4 max-w-4xl text-[22px] leading-relaxed text-zinc-400 pl-3"
+            className="mt-4 max-w-4xl pl-2 text-[clamp(1rem,1.5vw,1.375rem)] leading-relaxed text-zinc-400"
           >
             <LocaleText block>
               {t.hero.intro}
@@ -135,7 +138,7 @@ export function HeroSection() {
           </motion.div>
         </div>
       </div>
-      <div className="relative z-10 w-full px-24 lg:pr-104 pb-25">
+      <div className="relative z-10 w-full px-24 lg:pr-66 xl:pr-87 2xl:pr-104 pb-25">
         <h2 className="mb-8 text-xl font-medium uppercase tracking-[0.2em] text-zinc-400">
           <LocaleText>{t.hero.mySkills}</LocaleText>
         </h2>
