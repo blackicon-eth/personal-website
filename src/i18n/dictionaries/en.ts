@@ -31,11 +31,14 @@ export const en = {
     city: "Rome, Italy",
   },
   projects: {
+    label: "Projects I've built",
     techUsed: "Tech used",
     relatedLinks: "Related Links",
     goToProject: "Go to project",
     previous: "Previous project",
     next: "Next project",
+    readMore: "Read more",
+    readLess: "Read less",
     links: {
       launchApp: "Launch app",
       visitSite: "Visit site",

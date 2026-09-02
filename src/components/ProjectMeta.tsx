@@ -4,22 +4,23 @@ import { useI18n } from "@/i18n/LocaleProvider";
 
 interface ProjectMetaProps {
   project: Project;
+  mobileLayout?: boolean;
 }
 
-export function ProjectMeta({ project }: ProjectMetaProps) {
+export function ProjectMeta({ project, mobileLayout = false }: ProjectMetaProps) {
   const { t } = useI18n();
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className={`flex flex-col ${mobileLayout ? "gap-4" : "gap-6"}`}>
       <div>
         <span className="block text-[clamp(0.7rem,0.8vw,0.875rem)] uppercase tracking-widest text-zinc-600">
           <LocaleText>{t.projects.techUsed}</LocaleText>
         </span>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className={`mt-3 flex gap-2 ${mobileLayout ? "-mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "flex-wrap"}`}>
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[clamp(0.8rem,0.9vw,1rem)] text-zinc-300"
+              className={`shrink-0 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-[clamp(0.8rem,0.9vw,1rem)] text-zinc-300 ${mobileLayout ? "whitespace-nowrap" : ""}`}
             >
               {tag}
             </span>

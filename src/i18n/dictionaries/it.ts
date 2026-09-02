@@ -33,11 +33,14 @@ export const it: Dictionary = {
     city: "Roma, Italia",
   },
   projects: {
+    label: "Progetti che ho realizzato",
     techUsed: "Tecnologie usate",
     relatedLinks: "Link correlati",
     goToProject: "Vai al progetto",
     previous: "Progetto precedente",
     next: "Progetto successivo",
+    readMore: "Leggi di più",
+    readLess: "Leggi di meno",
     links: {
       launchApp: "Apri l'app",
       visitSite: "Visita il sito",

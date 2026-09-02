@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { HeroSection } from "@/components/HeroSection";
-import { ProjectsSection } from "@/components/ProjectsSection";
+import { MobileProjectsSection } from "@/components/MobileProjectsSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
 import { HackathonsSection } from "@/components/HackathonsSection";
 import { ContactSection } from "@/components/ContactSection";
@@ -61,7 +61,7 @@ export function MobileHome() {
           showLanguageSwitcher={false}
           mobileLayout
         />
-        <ProjectsSection />
+        <MobileProjectsSection />
         <ExperienceSection />
         <HackathonsSection />
         <ContactSection />
