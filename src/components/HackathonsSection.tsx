@@ -66,7 +66,7 @@ export function HackathonsSection() {
     >
       <div
         ref={containerRef}
-        className="h-[80vh] min-h-140 w-full px-24 lg:pr-104"
+        className="h-[80vh] min-h-140 w-full px-24 lg:pr-74 xl:pr-90 2xl:pr-104"
       >
         <div className="relative h-full w-full">
           <DriftWall
