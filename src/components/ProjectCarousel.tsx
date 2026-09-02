@@ -52,12 +52,12 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
   }, [activeIndex]);
 
   useEffect(() => {
-    if (paused || manualPaused || itemsForRender.length <= 1) return;
+    if (mobileLayout || paused || manualPaused || itemsForRender.length <= 1) return;
     const id = setInterval(() => {
       setPosition((p) => Math.min(p + 1, lastCloneIndex));
     }, AUTOPLAY_DELAY);
     return () => clearInterval(id);
-  }, [paused, manualPaused, itemsForRender.length, lastCloneIndex]);
+  }, [mobileLayout, paused, manualPaused, itemsForRender.length, lastCloneIndex]);
 
   const startManualPause = useCallback(() => {
     if (manualTimerRef.current != null) {
