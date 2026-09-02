@@ -29,7 +29,11 @@ function getRomeOffsetHours(date: Date): number {
   return Math.round((asUtc - date.getTime()) / 3600000);
 }
 
-export function LocationPill() {
+interface LocationPillProps {
+  plain?: boolean;
+}
+
+export function LocationPill({ plain = false }: LocationPillProps) {
   const { t } = useI18n();
   const [offset, setOffset] = useState(() => getRomeOffsetHours(new Date()));
 
@@ -41,7 +45,7 @@ export function LocationPill() {
   }, []);
 
   return (
-    <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md">
+    <div className={plain ? "flex items-center gap-2.5" : "flex items-center gap-2.5 rounded-full border border-white/10 bg-zinc-950/60 px-5 py-2.5 backdrop-blur-md"}>
       <FaLocationDot className="h-4.5 w-4.5 text-zinc-400" />
       <span className="text-sm font-medium text-zinc-300">
         <LocaleText>{t.location.city}</LocaleText>

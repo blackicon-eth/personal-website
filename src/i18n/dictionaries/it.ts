@@ -13,16 +13,23 @@ export const it: Dictionary = {
     hackathons: "Hackathon",
     contact: "Contatti",
   },
+  menu: {
+    socials: "I miei social",
+  },
   hero: {
-    findMeOn: "Trovami su",
+    findMeOn: "Mi trovi su",
     intro: "Ingegnere Full-Stack focalizzato sulla creazione di prodotti che gli utenti possano apprezzare e usare.",
     blurb:
       "Fondatore, hacker e prototipatore rapido. Esperto nel portare idee da zero a produzione con TypeScript, React, Next.js e sviluppo assistito dall'IA.",
+    mobileIntro:
+      "Ingegnere Full-Stack, esperto nel portare idee da zero alla produzione con TypeScript, React, Next.js e sviluppo assistito dall'IA.",
+    mobileBlurb: "Fondatore, hacker e prototipatore rapido.",
     viewMyWork: "I miei progetti",
     getInTouch: "Contattami",
     mySkills: "Le mie competenze",
   },
   location: {
+    label: "Posizione",
     city: "Roma, Italia",
   },
   projects: {
@@ -116,11 +123,5 @@ export const it: Dictionary = {
     titleLine2: "qualcosa insieme",
     bodyLine1: "Hai un progetto in mente o vuoi solo salutare?",
     bodyLine2: "La mia casella è sempre aperta.",
-  },
-  mobile: {
-    greeting: "Ciao!",
-    title: "In costruzione",
-    description:
-      "Per ora questo sito dà il meglio su laptop o desktop — sto ancora rifinendo l'esperienza mobile. Nel frattempo, passa a salutarmi:",
   },
 };

@@ -11,16 +11,23 @@ export const en = {
     hackathons: "Hackathons",
     contact: "Contact",
   },
+  menu: {
+    socials: "my socials",
+  },
   hero: {
     findMeOn: "Find me on",
     intro: "Full-Stack Engineer focused on building products users love.",
     blurb:
       "Founder, hacker, and rapid prototyper. Experienced in taking ideas from zero to production with TypeScript, React, Next.js, and AI-assisted development.",
+    mobileIntro:
+      "Full-Stack Engineer, experienced in taking ideas from zero to production with TypeScript, React, Next.js, and AI-assisted development.",
+    mobileBlurb: "Founder, hacker, and rapid prototyper.",
     viewMyWork: "View my work",
     getInTouch: "Get in touch",
     mySkills: "My Skills",
   },
   location: {
+    label: "Location",
     city: "Rome, Italy",
   },
   projects: {
@@ -114,10 +121,5 @@ export const en = {
     titleLine2: "something together",
     bodyLine1: "Have a project in mind or just want to say hi?",
     bodyLine2: "My inbox is always open.",
-  },
-  mobile: {
-    greeting: "Hey there!",
-    title: "This mobile version is under construction!",
-    description: "I'm still polishing the mobile experience. Until then, you can find me here:",
   },
 };

@@ -4,10 +4,14 @@
   --breakpoint-projects: 1700px;
 }
 
+@custom-variant tall (@media (min-height: 800px));
+
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: #52525b transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 ::-webkit-scrollbar {

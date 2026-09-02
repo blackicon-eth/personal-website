@@ -27,6 +27,8 @@ export interface StrokeTextProps {
   padding?: number;
   referenceText?: string;
   reverse?: boolean;
+  align?: "left" | "center";
+  svgHeight?: string;
   className?: string;
   style?: CSSProperties;
 }
@@ -57,6 +59,8 @@ export function StrokeText({
   padding = 0.1,
   referenceText,
   reverse = false,
+  align = "left",
+  svgHeight,
   className = "",
   style = {},
 }: StrokeTextProps) {
@@ -276,7 +280,7 @@ export function StrokeText({
   return (
     <span
       ref={rootRef}
-      className={`block w-full leading-0 ${trigger === "hover" ? "cursor-pointer" : ""} ${className}`.trim()}
+      className={`block w-full leading-0 ${align === "center" ? "flex justify-center" : ""} ${trigger === "hover" ? "cursor-pointer" : ""} ${className}`.trim()}
       style={style}
       role="img"
       aria-label={String(text ?? "")}
@@ -292,17 +296,18 @@ export function StrokeText({
         </svg>
       )}
       <svg
-        className="block h-auto max-w-full"
-        style={
-          contentWidth
-            ? {
-              width: `${contentWidth}px`,
-              maxWidth: "min(100%, clamp(24rem, 40vw, 48rem))",
-            }
-            : { width: "100%" }
+         className={`block h-auto max-w-full ${align === "center" ? "mx-auto" : ""}`.trim()}
+         style={
+            contentWidth
+              ? {
+                width: `${contentWidth}px`,
+                maxWidth: align === "center" ? "none" : "min(100%, clamp(24rem, 40vw, 48rem))",
+                ...(svgHeight ? { height: svgHeight } : {}),
+              }
+            : { width: "100%", ...(svgHeight ? { height: svgHeight } : {}) }
         }
         viewBox={viewBox}
-        preserveAspectRatio="xMinYMid meet"
+        preserveAspectRatio={align === "center" ? "xMidYMid meet" : "xMinYMid meet"}
         aria-hidden="true"
       >
         {fillMode === "wipe" && box && (
