@@ -64,6 +64,9 @@ export const it: Dictionary = {
       },
     },
   },
+  hackathons: {
+    label: "Hackathon a cui ho partecipato",
+  },
   experience: {
     items: {
       "builders-garden": {
@@ -124,7 +127,7 @@ export const it: Dictionary = {
     eyebrow: "Contattami",
     titleLine1: "Costruiamo",
     titleLine2: "qualcosa insieme",
-    bodyLine1: "Hai un progetto in mente o vuoi solo salutare?",
+    bodyLine1: "Hai un progetto in mente?",
     bodyLine2: "La mia casella è sempre aperta.",
   },
 };

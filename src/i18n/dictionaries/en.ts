@@ -62,6 +62,9 @@ export const en = {
       },
     },
   },
+  hackathons: {
+    label: "Hackathons I've attended",
+  },
   experience: {
     items: {
       "builders-garden": {
@@ -121,8 +124,8 @@ export const en = {
   contact: {
     eyebrow: "Get in touch",
     titleLine1: "Let's build",
-    titleLine2: "something together",
-    bodyLine1: "Have a project in mind or just want to say hi?",
+    titleLine2: "Together",
+    bodyLine1: "Do you have a project in mind?",
     bodyLine2: "My inbox is always open.",
   },
 };

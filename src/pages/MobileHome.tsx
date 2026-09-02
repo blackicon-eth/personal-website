@@ -2,8 +2,8 @@ import { motion } from "motion/react";
 import { HeroSection } from "@/components/HeroSection";
 import { MobileProjectsSection } from "@/components/MobileProjectsSection";
 import { MobileExperienceSection } from "@/components/MobileExperienceSection";
-import { HackathonsSection } from "@/components/HackathonsSection";
-import { ContactSection } from "@/components/ContactSection";
+import { MobileHackathonsSection } from "@/components/MobileHackathonsSection";
+import { MobileContactSection } from "@/components/MobileContactSection";
 import { SideNav } from "@/components/SideNav";
 import { StaggeredMenu } from "@/components/StaggeredMenu";
 import { Socials } from "@/components/Socials";
@@ -63,8 +63,8 @@ export function MobileHome() {
         />
         <MobileProjectsSection />
         <MobileExperienceSection />
-        <HackathonsSection />
-        <ContactSection />
+        <MobileHackathonsSection />
+        <MobileContactSection />
       </motion.div>
     </main>
   );
