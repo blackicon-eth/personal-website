@@ -47,7 +47,7 @@ export function MobileExperienceSection() {
               className="relative"
             >
               <div className="relative">
-                <span className="absolute -left-[1.6rem] top-1/2 z-10 block size-3 -translate-y-1/2 rounded-full border-2 border-white/20 bg-zinc-950" />
+                <span className="absolute left-[-1.6rem] top-1/2 z-10 block size-3 -translate-y-1/2 rounded-full border-2 border-white/20 bg-zinc-950" />
                 <div className="overflow-hidden rounded-xl border border-white/10">
                   {item.image ? (
                     <ExperienceImage
