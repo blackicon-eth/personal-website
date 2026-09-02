@@ -76,6 +76,8 @@ export function HackathonsSection() {
             tileHeight={TILE_HEIGHT}
             gap={GAP}
             fade={0.05}
+            dim={0.75}
+            overlayOpacity={0.18}
             parallax={0.5}
             roll={-5}
             turn={10}

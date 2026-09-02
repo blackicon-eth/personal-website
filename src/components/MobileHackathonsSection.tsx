@@ -53,6 +53,8 @@ export function MobileHackathonsSection() {
               tileHeight={TILE_HEIGHT}
               gap={GAP}
               fade={0.05}
+              dim={0.75}
+              overlayOpacity={0.18}
               parallax={0.35}
               roll={-3}
               turn={6}
