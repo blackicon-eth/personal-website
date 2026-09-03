@@ -124,7 +124,9 @@ export const en = {
   contact: {
     eyebrow: "Get in touch",
     titleLine1: "Let's build",
-    titleLine2: "Together",
+    titleLine2: "together",
+    desktopTitleLine1: "Let's build something",
+    desktopTitleLine2: "together",
     bodyLine1: "Do you have a project in mind?",
     bodyLine2: "My inbox is always open.",
   },

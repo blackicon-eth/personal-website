@@ -58,9 +58,9 @@ export function ContactSection() {
           className="mt-6 text-[clamp(3rem,5vw,6rem)] font-bold leading-tight"
         >
           <LocaleText block>
-            <ShinyText text={t.contact.titleLine1} speed={3} />
+            <ShinyText text={t.contact.desktopTitleLine1} speed={3} color="rgba(215, 215, 215, 0.78)" shineColor="rgba(255, 255, 255, 1)" />
             <br />
-            <ShinyText text={t.contact.titleLine2} speed={3} />
+            <ShinyText text={t.contact.desktopTitleLine2} speed={3} color="rgba(215, 215, 215, 0.78)" shineColor="rgba(255, 255, 255, 1)" />
           </LocaleText>
         </motion.h2>
 

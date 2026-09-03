@@ -127,6 +127,8 @@ export const it: Dictionary = {
     eyebrow: "Contattami",
     titleLine1: "Costruiamo",
     titleLine2: "qualcosa insieme",
+    desktopTitleLine1: "Costruiamo qualcosa",
+    desktopTitleLine2: "insieme",
     bodyLine1: "Hai un progetto in mente?",
     bodyLine2: "La mia casella è sempre aperta.",
   },
