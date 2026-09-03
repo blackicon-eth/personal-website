@@ -16,7 +16,7 @@ export function ProjectMeta({ project, mobileLayout = false }: ProjectMetaProps)
         <span className="block text-[clamp(0.7rem,0.8vw,0.875rem)] uppercase tracking-widest text-zinc-600">
           <LocaleText>{t.projects.techUsed}</LocaleText>
         </span>
-        <div className={`mt-3 flex gap-2 ${mobileLayout ? "-mx-1 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" : "flex-wrap"}`}>
+        <div className={`mt-3 flex gap-2 ${mobileLayout ? "-mx-1 overflow-x-auto px-1 pb-1 scrollbar-none [&::-webkit-scrollbar]:hidden" : "flex-wrap"}`}>
           {project.tags.map((tag) => (
             <span
               key={tag}

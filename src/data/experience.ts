@@ -13,19 +13,19 @@ export const experience: Experience[] = [
   {
     id: "builders-garden",
     company: "Builders Garden",
-    image: "/experience/bg.png",
+    image: "/experience/bg.webp",
     background: "#000000",
   },
   {
     id: "start-and-go",
     company: "Start&Go Innovative Solutions",
-    image: "/experience/startego.png",
+    image: "/experience/startego.webp",
     background: "#FFFFFF",
   },
   {
     id: "freelancer",
     company: "Freelancer",
-    image: "/experience/fiverr.png",
+    image: "/experience/fiverr.webp",
     background: "#d3f6e5",
   },
 ];

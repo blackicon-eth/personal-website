@@ -181,6 +181,12 @@ export function DriftWall({
   );
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let isVisible = true;
+    let isPageVisible = !document.hidden;
+
     const animate = (ts: number) => {
       if (lastTsRef.current === null) lastTsRef.current = ts;
       const dt = Math.min(0.05, Math.max(0, ts - lastTsRef.current) / 1000);
@@ -219,13 +225,41 @@ export function DriftWall({
         }
       }
 
-      rafRef.current = requestAnimationFrame(animate);
+      rafRef.current = isVisible && isPageVisible ? requestAnimationFrame(animate) : null;
     };
 
-    rafRef.current = requestAnimationFrame(animate);
+    const tryStart = () => {
+      if (isVisible && isPageVisible && rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    };
+    const tryStop = () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        isVisible ? tryStart() : tryStop();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(container);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      isPageVisible ? tryStart() : tryStop();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    tryStart();
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
+      tryStop();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       lastTsRef.current = null;
     };
   }, [baseVelocities, columnMeta, pauseOnHover, parallax, reduced, applyPlaneTransform]);

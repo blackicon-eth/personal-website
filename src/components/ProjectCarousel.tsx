@@ -22,6 +22,9 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
   const [manualPaused, setManualPaused] = useState(false);
   const [isJumping, setIsJumping] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(() =>
+    typeof document !== "undefined" && !document.hidden,
+  );
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const x = useMotionValue(0);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -44,6 +47,25 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
     return () => ro.disconnect();
   }, []);
 
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting && !document.hidden),
+      { threshold: 0 },
+    );
+    observer.observe(el);
+
+    const onVisibility = () => setIsVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
   const activeIndex =
     projects.length === 0 ? 0 : (position - 1 + projects.length) % projects.length;
 
@@ -52,12 +74,12 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
   }, [activeIndex]);
 
   useEffect(() => {
-    if (mobileLayout || paused || manualPaused || itemsForRender.length <= 1) return;
+    if (!isVisible || mobileLayout || paused || manualPaused || itemsForRender.length <= 1) return;
     const id = setInterval(() => {
       setPosition((p) => Math.min(p + 1, lastCloneIndex));
     }, AUTOPLAY_DELAY);
     return () => clearInterval(id);
-  }, [mobileLayout, paused, manualPaused, itemsForRender.length, lastCloneIndex]);
+  }, [isVisible, mobileLayout, paused, manualPaused, itemsForRender.length, lastCloneIndex]);
 
   const startManualPause = useCallback(() => {
     if (manualTimerRef.current != null) {
@@ -304,7 +326,7 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
                 exit={{ opacity: 0, y: -16 }}
                 transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               >
-                              <ProjectMeta project={project} />
+                <ProjectMeta project={project} />
               </motion.div>
             </AnimatePresence>
           </div>
@@ -318,9 +340,9 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                className={`relative flex flex-1 flex-col justify-between gap-8 pb-0 2xl:pb-17 ${mobileLayout ? "gap-4" : ""}`}
+              className={`relative flex flex-1 flex-col justify-between gap-8 pb-0 2xl:pb-17 ${mobileLayout ? "gap-4" : ""}`}
             >
-                <span
+              <span
                 aria-hidden="true"
                 className="pointer-events-none absolute select-none font-bold leading-none text-transparent"
                 style={{
@@ -345,7 +367,7 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
                   animate={mobileLayout ? { height: descriptionExpanded ? "auto" : 150 } : undefined}
                   initial={false}
                   transition={{ duration: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
-                  className={mobileLayout ? "mt-4 overflow-hidden" : ""}
+                  className={mobileLayout ? "mt-4 overflow-hidden" : "mt-4"}
                 >
                   <p className={`whitespace-pre-line text-zinc-400 ${mobileLayout ? "text-base leading-[1.55]" : "text-[clamp(1rem,1.35vw,1.25rem)] xl:leading-relaxed"}`}>
                     <LocaleText block>

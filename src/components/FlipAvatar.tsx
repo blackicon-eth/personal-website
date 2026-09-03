@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 
-const images = ["/propics/face-pic.webp", "/propics/acorn-pic.png"];
+const images = ["/propics/face-pic.webp", "/propics/acorn-pic.webp"];
 
 interface FlipAvatarProps {
   onToggle: () => void;

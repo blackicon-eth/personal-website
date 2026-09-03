@@ -31,7 +31,7 @@ export const projects: Project[] = [
       { label: "Builders Garden", href: "https://builders.garden/projects/itm" },
       { label: "ITM Studio", href: "https://itm.studio/" },
     ],
-    image: "/projects/itm.png",
+    image: "/projects/itm.webp",
     gradient: "linear-gradient(160deg, #8b5cf6 0%, #1c1330 45%, #09090b 100%)",
   },
   {
@@ -42,7 +42,7 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/blackicon-eth/brewlog" },
       { label: "Tether QVAC", href: "https://qvac.tether.io/" },
     ],
-    image: "/projects/brewlog.png",
+    image: "/projects/brewlog.webp",
     gradient: "linear-gradient(160deg, #c28a5b 0%, #221a12 45%, #09090b 100%)",
   },
   {
@@ -57,7 +57,7 @@ export const projects: Project[] = [
       },
       { label: "Glider", href: "https://glider.fi" },
     ],
-    image: "/projects/glider.png",
+    image: "/projects/glider.webp",
     gradient: "linear-gradient(160deg, #10b981 0%, #0f1f18 45%, #09090b 100%)",
   },
   {
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     title: "Residenza Savelli",
     tags: ["Next.js", "TypeScript", "Tailwind", "shadcn/ui", "Motion", "i18n"],
     links: [{ label: "Visit site", labelKey: "visitSite", href: "https://bnbsavelli.vercel.app/it" }],
-    image: "/projects/savelli.png",
+    image: "/projects/savelli.webp",
     gradient: "linear-gradient(160deg, #c9a87c 0%, #221b13 45%, #09090b 100%)",
   },
 ];
