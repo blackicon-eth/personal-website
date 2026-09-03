@@ -192,12 +192,14 @@ export function GradientWaves({
     const container = containerRef.current;
     if (!container) return;
 
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1 : 1.5);
     const renderer = new Renderer({
       webgl: 2,
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr,
     });
 
     const gl = renderer.gl;
