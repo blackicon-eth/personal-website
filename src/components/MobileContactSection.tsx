@@ -32,7 +32,7 @@ export function MobileContactSection() {
           zoom={0.9}
           height={6}
           fogDepth={15}
-          detail="high"
+          detail="medium"
           brightness={1.2}
           opacity={0.3}
           mouseInteraction={false}
