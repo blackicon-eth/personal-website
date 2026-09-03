@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DriftWall } from "@/components/DriftWall";
 import { hackathons } from "@/data/hackathons";
 import { LocaleText } from "@/components/LocaleText";
 import { useI18n } from "@/i18n/LocaleProvider";
 
-const TILE_WIDTH = 156;
-const TILE_HEIGHT = 112;
+const BASE_TILE_WIDTH = 156;
+const BASE_TILE_HEIGHT = 112;
 const GAP = 12;
 
 function placeholderImage(event: string, year: string): string {
@@ -25,6 +25,34 @@ function placeholderImage(event: string, year: string): string {
 
 export function MobileHackathonsSection() {
   const { t } = useI18n();
+  const wallContainerRef = useRef<HTMLDivElement>(null);
+  const [tileSize, setTileSize] = useState({ width: BASE_TILE_WIDTH, height: BASE_TILE_HEIGHT, columns: 2 });
+
+  useEffect(() => {
+    const container = wallContainerRef.current;
+    if (!container) return;
+
+    const updateSize = () => {
+      const width = container.clientWidth;
+      if (!width) return;
+      const columns = Math.min(
+        4,
+        Math.max(2, Math.floor((width + GAP) / (BASE_TILE_WIDTH + GAP))),
+      );
+      const tileWidth = Math.floor((width - (columns - 1) * GAP) / columns);
+      setTileSize({
+        width: tileWidth,
+        height: Math.round(tileWidth * (BASE_TILE_HEIGHT / BASE_TILE_WIDTH)),
+        columns,
+      });
+    };
+
+    updateSize();
+    const ro = new ResizeObserver(updateSize);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
   const items = useMemo(
     () =>
       hackathons.map((h) => ({
@@ -44,13 +72,13 @@ export function MobileHackathonsSection() {
         <p className="mb-8 text-xs font-medium uppercase tracking-[0.24em] text-zinc-500">
           <LocaleText>{t.hackathons.label}</LocaleText>
         </p>
-        <div className="h-[80vh] w-full">
+        <div ref={wallContainerRef} className="h-[80vh] w-full">
           <div className="relative h-full w-full">
             <DriftWall
               items={items}
-              columns={2}
-              tileWidth={TILE_WIDTH}
-              tileHeight={TILE_HEIGHT}
+              columns={tileSize.columns}
+              tileWidth={tileSize.width}
+              tileHeight={tileSize.height}
               gap={GAP}
               fade={0.05}
               dim={0.75}
