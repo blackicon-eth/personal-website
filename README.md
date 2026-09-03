@@ -4,6 +4,10 @@ The personal website of Mattia Verdecchi, a full-stack product engineer, founder
 
 The site is a dark, interaction-focused portfolio built around a single scrolling page. It presents selected projects, professional experience, hackathons, and ways to get in touch, with English and Italian translations throughout.
 
+[Live demo](https://mattiaverdecchi.dev)
+
+![Screenshot of Mattia Verdecchi's personal website](./public/screen/front.png)
+
 ## Highlights
 
 - Responsive desktop and mobile page compositions
