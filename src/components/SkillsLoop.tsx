@@ -84,6 +84,28 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
   const popoverRef = useRef<HTMLDivElement>(null);
   const hoverCloseRef = useRef<number | null>(null);
 
+  const adjustDesktopPopover = useCallback((anchor: HTMLDivElement) => {
+    if (clickToOpen || portalPopover) return;
+
+    const popover = anchor.querySelector<HTMLElement>('[data-skill-popover="true"]');
+    const container = loopRef.current;
+    if (!popover || !container) return;
+    const arrow = popover.querySelector<HTMLElement>('[data-skill-popover-arrow="true"]');
+
+    popover.style.marginLeft = "0px";
+    if (arrow) arrow.style.left = "";
+    const popoverRect = popover.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+      const center = popoverRect.left + popoverRect.width / 2;
+      const popoverWidth = popoverRect.width / 0.95;
+      const edgePadding = 12;
+      const minCenter = containerRect.left + popoverWidth / 2 + edgePadding;
+      const maxCenter = containerRect.right - popoverWidth / 2 - edgePadding;
+    const offset = Math.min(Math.max(minCenter - center, 0), maxCenter - center);
+    popover.style.marginLeft = `${offset}px`;
+    if (arrow) arrow.style.left = `calc(50% - ${offset}px)`;
+  }, [clickToOpen, portalPopover]);
+
   useEffect(() => {
     if (!clickToOpen || !openItem) return;
 
@@ -136,20 +158,29 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
         <div
           key={key}
           className={`group/skill relative flex flex-col items-center gap-2.5 ${clickToOpen ? "cursor-pointer" : ""}`}
-          onMouseEnter={portalPopover && !clickToOpen && description ? (event) => {
+           onMouseEnter={portalPopover && !clickToOpen && description ? (event) => {
             if (hoverCloseRef.current !== null) {
               window.clearTimeout(hoverCloseRef.current);
               hoverCloseRef.current = null;
             }
-            const rect = event.currentTarget.getBoundingClientRect();
-            setOpenItem({ key: itemKey, title: String(title), description, anchor: event.currentTarget, rect });
-          } : undefined}
-          onMouseLeave={portalPopover && !clickToOpen ? () => {
+             const rect = event.currentTarget.getBoundingClientRect();
+             setOpenItem({ key: itemKey, title: String(title), description, anchor: event.currentTarget, rect });
+           } : !clickToOpen && !portalPopover && description ? (event) => {
+             adjustDesktopPopover(event.currentTarget);
+           } : undefined}
+           onMouseLeave={portalPopover && !clickToOpen ? () => {
             hoverCloseRef.current = window.setTimeout(() => {
               setOpenItem(null);
               hoverCloseRef.current = null;
-            }, 120);
-          } : undefined}
+               }, 120);
+            } : !clickToOpen && !portalPopover ? (event) => {
+              const popover = event.currentTarget.querySelector<HTMLElement>('[data-skill-popover="true"]');
+             if (popover) {
+               popover.style.marginLeft = "0px";
+               const arrow = popover.querySelector<HTMLElement>('[data-skill-popover-arrow="true"]');
+               if (arrow) arrow.style.left = "";
+             }
+           } : undefined}
           onClick={clickToOpen && description ? (event) => {
             const anchor = event.currentTarget;
             const rect = anchor.getBoundingClientRect();
@@ -185,18 +216,18 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
             {title}
           </span>
           {description && !clickToOpen && !portalPopover ? (
-            <div className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-5 w-max max-w-[320px] -translate-x-1/2 translate-y-1 scale-95 opacity-0 transition-all duration-200 ease-out group-hover/skill:translate-y-0 group-hover/skill:scale-100 group-hover/skill:opacity-100">
+             <div data-skill-popover="true" className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-5 w-max max-w-[320px] -translate-x-1/2 translate-y-1 scale-95 opacity-0 transition-all duration-200 ease-out group-hover/skill:translate-y-0 group-hover/skill:scale-100 group-hover/skill:opacity-100">
               <div className="relative rounded-xl border border-white/10 bg-zinc-900/90 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl">
                 <p className="text-[17px] font-semibold text-white">{t.skills.whereLearned}</p>
                 <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{description}</p>
-                <div className="absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-white/10 bg-zinc-900/90" />
+                 <div data-skill-popover-arrow="true" className="absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-white/10 bg-zinc-900/90" />
               </div>
             </div>
           ) : null}
         </div>
       );
     },
-    [clickToOpen, portalPopover, t],
+    [adjustDesktopPopover, clickToOpen, portalPopover, t],
   );
 
   return (
@@ -216,7 +247,7 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
       {portalPopover && openItem && typeof document !== "undefined" && createPortal(
         <div
           ref={popoverRef}
-          className="pointer-events-none fixed z-100 w-max max-w-[min(320px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-full rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl"
+          className="pointer-events-none fixed z-100 w-max max-w-[min(280px,calc(100vw-3rem))] -translate-x-1/2 -translate-y-full rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl"
           style={{ left: openItem.rect.left + openItem.rect.width / 2, top: openItem.rect.top - 20 }}
         >
           <p className="text-[17px] font-semibold text-white">{t.skills.whereLearned}</p>
