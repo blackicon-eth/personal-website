@@ -126,10 +126,13 @@ export function Aurora(props: AuroraProps) {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 1.5);
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
       antialias: true,
+      dpr,
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -145,7 +148,7 @@ export function Aurora(props: AuroraProps) {
       const height = ctn.offsetHeight;
       renderer.setSize(width, height);
       if (program) {
-        program.uniforms.uResolution.value = [width, height];
+        program.uniforms.uResolution.value = [width * dpr, height * dpr];
       }
     }
     window.addEventListener("resize", resize);
@@ -167,7 +170,7 @@ export function Aurora(props: AuroraProps) {
         uTime: { value: 0 },
         uAmplitude: { value: amplitude },
         uColorStops: { value: colorStopsArray },
-        uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
+        uResolution: { value: [ctn.offsetWidth * dpr, ctn.offsetHeight * dpr] },
         uBlend: { value: blend },
       },
     });

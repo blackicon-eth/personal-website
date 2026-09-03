@@ -252,12 +252,17 @@ export function SpecularButton({
     let bright = 0;
     let last = performance.now();
     let raf = 0;
+    let isVisible = true;
+    let isPageVisible = !document.hidden;
 
     const lineC = new Color();
     const baseC = new Color();
 
     const update = (now: number) => {
-      raf = requestAnimationFrame(update);
+      if (!isVisible || !isPageVisible) {
+        raf = 0;
+        return;
+      }
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
       const p = propsRef.current;
@@ -288,12 +293,43 @@ export function SpecularButton({
       program.uniforms.uShineFade.value = (p.shineFade * Math.PI) / 180;
       program.uniforms.uThickness.value = p.thickness * dpr;
       renderer.render({ scene: mesh });
+      raf = requestAnimationFrame(update);
     };
-    raf = requestAnimationFrame(update);
+
+    const tryStart = () => {
+      if (isVisible && isPageVisible && raf === 0) {
+        raf = requestAnimationFrame(update);
+      }
+    };
+    const tryStop = () => {
+      if (raf !== 0) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) tryStart();
+        else tryStop();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(btn);
+
+    const onVisibility = () => {
+      isPageVisible = !document.hidden;
+      if (isPageVisible) tryStart();
+      else tryStop();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    tryStart();
 
     return () => {
-      cancelAnimationFrame(raf);
+      tryStop();
       ro.disconnect();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointermove", onPointerMove);
       if (gl.canvas.parentNode === fx) fx.removeChild(gl.canvas);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
