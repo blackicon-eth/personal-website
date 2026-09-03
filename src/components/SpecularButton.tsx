@@ -360,7 +360,7 @@ export function SpecularButton({
         aria-hidden="true"
         className="pointer-events-none absolute -inset-5 z-[1] [&_canvas]:block [&_canvas]:h-full [&_canvas]:w-full"
       />
-      <span className="relative z-[2]">{children}</span>
+      <span className="relative z-[2] flex items-center justify-center leading-none">{children}</span>
     </button>
   );
 }

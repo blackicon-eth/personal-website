@@ -29,12 +29,12 @@ export function MobileContactSection() {
           swell={30}
           turbulence={10}
           tilt={1.3}
-          zoom={0.9}
+          zoom={0.6}
           height={6}
-          fogDepth={15}
+          fogDepth={18}
           detail="medium"
-          brightness={1.2}
-          opacity={0.3}
+          brightness={1.3}
+          opacity={0.38}
           mouseInteraction={false}
           parallaxStrength={0}
           grain={false}
