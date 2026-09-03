@@ -205,12 +205,14 @@ export function ProjectCarousel({ mobileLayout = false }: ProjectCarouselProps) 
                       style={{ width }}
                     >
                       {p.image ? (
-                        <img
-                          src={p.image}
-                          alt={p.title}
-                          draggable={false}
-                          className="h-full w-full object-cover"
-                        />
+                          <img
+                            src={p.image}
+                            alt={p.title}
+                            loading={i === position ? "eager" : "lazy"}
+                            decoding="async"
+                            draggable={false}
+                            className="h-full w-full object-cover"
+                          />
                       ) : (
                         <div
                           className="relative flex h-full w-full items-center justify-center overflow-hidden p-8"
