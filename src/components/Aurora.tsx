@@ -158,7 +158,8 @@ export function Aurora(props: AuroraProps) {
       delete geometry.attributes.uv;
     }
 
-    const colorStopsArray = colorStops.map((hex) => {
+    let colorStopsKey = colorStops.join("|");
+    let colorStopsArray = colorStops.map((hex) => {
       const c = new Color(hex);
       return [c.r, c.g, c.b];
     });
@@ -188,10 +189,15 @@ export function Aurora(props: AuroraProps) {
         program.uniforms.uAmplitude.value = propsRef.current.amplitude ?? 1.0;
         program.uniforms.uBlend.value = propsRef.current.blend ?? blend;
         const stops = propsRef.current.colorStops ?? colorStops;
-        program.uniforms.uColorStops.value = stops.map((hex: string) => {
-          const c = new Color(hex);
-          return [c.r, c.g, c.b];
-        });
+        const nextColorStopsKey = stops.join("|");
+        if (nextColorStopsKey !== colorStopsKey) {
+          colorStopsKey = nextColorStopsKey;
+          colorStopsArray = stops.map((hex: string) => {
+            const c = new Color(hex);
+            return [c.r, c.g, c.b];
+          });
+          program.uniforms.uColorStops.value = colorStopsArray;
+        }
         renderer.render({ scene: mesh });
       }
       animateId = isVisible && isPageVisible ? requestAnimationFrame(update) : 0;
