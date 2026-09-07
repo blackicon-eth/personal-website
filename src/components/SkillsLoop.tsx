@@ -246,13 +246,16 @@ export function SkillsLoop({ gap = 64, itemSize = 64, clickToOpen = false, porta
       />
       {portalPopover && openItem && typeof document !== "undefined" && createPortal(
         <div
+          key={openItem.key}
           ref={popoverRef}
-          className="pointer-events-none fixed z-100 w-max max-w-[min(280px,calc(100vw-3rem))] -translate-x-1/2 -translate-y-full rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl"
+          className="pointer-events-none fixed z-100 -translate-x-1/2 -translate-y-full"
           style={{ left: openItem.rect.left + openItem.rect.width / 2, top: openItem.rect.top - 20 }}
         >
-          <p className="text-[17px] font-semibold text-white">{t.skills.whereLearned}</p>
-          <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{openItem.description}</p>
-          <div className="absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-white/10 bg-zinc-900/95" />
+          <div className="relative w-max max-w-[min(280px,calc(100vw-3rem))] rounded-xl border border-white/10 bg-zinc-900/95 px-4 py-3.5 shadow-xl shadow-black/50 backdrop-blur-xl animate-skill-popover-in">
+            <p className="text-[17px] font-semibold text-white">{t.skills.whereLearned}</p>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-zinc-400">{openItem.description}</p>
+            <div className="absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b border-r border-white/10 bg-zinc-900/95" />
+          </div>
         </div>,
         document.body,
       )}
