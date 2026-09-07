@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { DriftWall } from "@/components/DriftWall";
 import { hackathons } from "@/data/hackathons";
 
@@ -64,7 +65,11 @@ export function HackathonsSection() {
       id="hackathons"
       className="flex min-h-screen w-full items-center py-24"
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
         ref={containerRef}
         className="h-[80vh] min-h-140 w-full px-24 lg:pr-74 xl:pr-90 2xl:pr-104"
       >
@@ -86,7 +91,7 @@ export function HackathonsSection() {
             direction="up"
           />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

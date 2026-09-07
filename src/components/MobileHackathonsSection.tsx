@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "motion/react";
 import { DriftWall } from "@/components/DriftWall";
 import { hackathons } from "@/data/hackathons";
 import { LocaleText } from "@/components/LocaleText";
@@ -68,7 +69,13 @@ export function MobileHackathonsSection() {
 
   return (
     <section id="hackathons" className="flex w-full items-center py-10">
-      <div className="w-full px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+        className="w-full px-4"
+      >
         <p className="mb-8 text-xs font-medium uppercase tracking-[0.24em] text-zinc-500">
           <LocaleText>{t.hackathons.label}</LocaleText>
         </p>
@@ -92,7 +99,7 @@ export function MobileHackathonsSection() {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
