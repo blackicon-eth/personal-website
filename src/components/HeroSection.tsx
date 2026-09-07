@@ -169,12 +169,17 @@ export function HeroSection({
           </motion.div>
         </div>
       </div>
-      <div className={`relative z-10 w-full px-24 lg:pr-66 xl:pr-87 2xl:pr-104 ${mobileLayout ? "px-8! pb-6" : "pb-25"}`}>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 1.4, ease: [0.25, 0.1, 0.25, 1] }}
+        className={`relative z-10 w-full px-24 lg:pr-66 xl:pr-87 2xl:pr-104 ${mobileLayout ? "px-8! pb-6" : "pb-25"}`}
+      >
         <h2 className={`font-medium uppercase tracking-[0.2em] text-zinc-400 ${mobileLayout ? "text-sm tall:text-base mb-6" : "text-xl mb-8"}`}>
           <LocaleText>{t.hero.mySkills}</LocaleText>
         </h2>
         <SkillsLoop gap={mobileLayout ? 36 : 64} itemSize={mobileLayout ? 48 : 64} clickToOpen={mobileLayout} portalPopover={mobileLayout} />
-      </div>
+      </motion.div>
     </section>
   );
 }
