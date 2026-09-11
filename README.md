@@ -79,7 +79,7 @@ pnpm dev         # Start the Vite development server
 pnpm build       # Type-check and create a production build
 pnpm typecheck   # Run TypeScript checks without emitting files
 pnpm lint        # Run Oxlint
-pnpm preview      # Preview the production build locally
+pnpm preview     # Preview the production build locally
 ```
 
 ## Content Updates
