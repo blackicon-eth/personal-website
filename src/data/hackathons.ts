@@ -9,6 +9,13 @@ export interface Hackathon {
 
 export const hackathons: Hackathon[] = [
   {
+    event: "ETHRome 2026",
+    year: "2026",
+    logo: "/hackathons/logos/ethrome.webp",
+    url: "https://www.github.com/blackicon-eth/nectar",
+    logoTranslateY: -12,
+  },
+  {
     event: "ETHGlobal Cannes",
     year: "2026",
     logo: "/hackathons/logos/ethglobal-cannes.webp",
