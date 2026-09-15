@@ -43,6 +43,7 @@ export interface DriftWallProps {
   grayscale?: boolean;
   overlayColor?: string;
   overlayOpacity?: number;
+  mobile?: boolean;
   className?: string;
   style?: CSSProperties;
 }
@@ -94,6 +95,7 @@ export function DriftWall({
   grayscale = false,
   overlayColor = "#060010",
   overlayOpacity = 0.42,
+  mobile = false,
   className = "",
   style,
 }: DriftWallProps) {
@@ -112,6 +114,7 @@ export function DriftWall({
 
   const [containerHeight, setContainerHeight] = useState(600);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [mobileFlipped, setMobileFlipped] = useState(false);
   const activeIdRef = useRef<string | null>(null);
   const [reduced, setReduced] = useState(false);
 
@@ -122,6 +125,14 @@ export function DriftWall({
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  useEffect(() => {
+    if (!mobile || reduced) return;
+    const interval = window.setInterval(() => {
+      setMobileFlipped((flipped) => !flipped);
+    }, 10000);
+    return () => window.clearInterval(interval);
+  }, [mobile, reduced]);
 
   const columnItems = useMemo<DriftWallItem[][]>(() => {
     const cols: DriftWallItem[][] = Array.from({ length: columns }, () => []);
@@ -365,17 +376,24 @@ export function DriftWall({
   const backContentClass = cx(
     contentClass,
     "opacity-0",
-    "group-[.is-active]/tile:opacity-100 group-focus-visible/tile:opacity-100",
+    "group-[.is-active]/tile:opacity-100 group-[.is-content-active]/tile:opacity-100 group-focus-visible/tile:opacity-100",
   );
 
-  const renderTile = (item: DriftWallItem, id: string, colIndex: number) => {
+  const renderTile = (item: DriftWallItem, id: string, colIndex: number, itemIndex: number) => {
+    const contentTransitionStyle: CSSProperties | undefined = mobile
+      ? {
+          transitionDuration: "600ms",
+          transitionDelay: `${itemIndex * 80}ms`,
+        }
+      : undefined;
     const inner = (
       <span className={innerClass}>
         <span
           className={cx(
             contentClass,
-            "group-[.is-active]/tile:opacity-0 group-focus-visible/tile:opacity-0",
+            "group-[.is-active]/tile:opacity-0 group-[.is-content-active]/tile:opacity-0 group-focus-visible/tile:opacity-0",
           )}
+          style={contentTransitionStyle}
         >
           <span className="absolute inset-0 flex items-center justify-center p-4" style={{
             transform: `translate(0px, ${item.logoTranslateY}px)`
@@ -397,7 +415,7 @@ export function DriftWall({
             )}
           </span>
         </span>
-        <span className={backContentClass}>
+        <span className={backContentClass} style={contentTransitionStyle}>
           {item.projectImage ? (
             <>
               <span className="absolute inset-0 flex items-center justify-center p-4">
@@ -427,10 +445,14 @@ export function DriftWall({
       </span>
     );
     const commonProps = {
-      className: cx(tileClass, activeId === id && "is-active"),
+      className: cx(
+        tileClass,
+        activeId === id && "is-active",
+        mobile && mobileFlipped && "is-content-active",
+      ),
       "data-tile-id": id,
       "data-col": colIndex,
-      onFocus: () => activate(id, colIndex),
+      onFocus: mobile ? undefined : () => activate(id, colIndex),
       onBlur: release,
     };
     if (item.href) {
@@ -452,11 +474,11 @@ export function DriftWall({
       ref={containerRef}
       className={cx("relative h-full w-full overflow-hidden", className)}
       style={{ ...cssVars, ...style }}
-      onPointerMove={handlePointerMove}
+      onPointerMove={mobile ? undefined : handlePointerMove}
       onPointerEnter={() => {
         wallHoveredRef.current = true;
       }}
-      onPointerLeave={handlePointerLeaveWall}
+      onPointerLeave={mobile ? undefined : handlePointerLeaveWall}
       role="group"
       aria-label="Drifting wall of tiles"
     >
@@ -479,7 +501,7 @@ export function DriftWall({
                 }}
               >
                 {copies.map((_, copyIndex) =>
-                  col.map((item, itemIndex) => renderTile(item, `${c}-${copyIndex}-${itemIndex}`, c)),
+                  col.map((item, itemIndex) => renderTile(item, `${c}-${copyIndex}-${itemIndex}`, c, itemIndex)),
                 )}
               </div>
             </div>

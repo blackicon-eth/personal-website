@@ -85,6 +85,7 @@ export function MobileHackathonsSection() {
           <div className="relative h-full w-full">
             <DriftWall
               items={items}
+              mobile
               columns={tileSize.columns}
               tileWidth={tileSize.width}
               tileHeight={tileSize.height}
