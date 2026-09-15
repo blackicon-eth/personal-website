@@ -60,6 +60,8 @@ export function MobileHackathonsSection() {
         image: h.logo ?? placeholderImage(h.event, h.year),
         title: h.event,
         subtitle: h.year,
+        projectImage: h.projectLogo,
+        projectTitle: h.projectName,
         background: h.background,
         logoTranslateY: h.logoTranslateY,
         href: h.url,

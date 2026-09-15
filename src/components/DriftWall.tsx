@@ -13,6 +13,8 @@ export interface DriftWallItem {
   image: string;
   title?: string;
   subtitle?: string;
+  projectImage?: string;
+  projectTitle?: string;
   href?: string;
   logoTranslateY?: number
   background?: string;
@@ -358,30 +360,71 @@ export function DriftWall({
     "absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-4 pb-3 pt-10",
     "bg-gradient-to-t from-black/85 via-black/45 to-transparent",
   );
+  const contentClass =
+    "absolute inset-0 transition-opacity duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)]";
+  const backContentClass = cx(
+    contentClass,
+    "opacity-0",
+    "group-[.is-active]/tile:opacity-100 group-focus-visible/tile:opacity-100",
+  );
 
   const renderTile = (item: DriftWallItem, id: string, colIndex: number) => {
     const inner = (
       <span className={innerClass}>
-        <span className="absolute inset-0 flex items-center justify-center p-4" style={{
-          transform: `translate(0px, ${item.logoTranslateY}px)`
-        }}>
-          <img
-            src={item.image}
-            alt={item.title ?? ""}
-            decoding="async"
-            draggable={false}
-            className={imgClass}
-            style={item.background ? { backgroundColor: item.background } : undefined}
-          />
+        <span
+          className={cx(
+            contentClass,
+            "group-[.is-active]/tile:opacity-0 group-focus-visible/tile:opacity-0",
+          )}
+        >
+          <span className="absolute inset-0 flex items-center justify-center p-4" style={{
+            transform: `translate(0px, ${item.logoTranslateY}px)`
+          }}>
+            <img
+              src={item.image}
+              alt={item.title ?? ""}
+              decoding="async"
+              draggable={false}
+              className={imgClass}
+              style={item.background ? { backgroundColor: item.background } : undefined}
+            />
+          </span>
+          <span className={overlayClass} aria-hidden="true" />
+          <span className={captionClass}>
+            <span className="truncate text-sm font-medium text-white">{item.title}</span>
+            {item.subtitle && (
+              <span className="shrink-0 font-mono text-xs text-zinc-400">{item.subtitle}</span>
+            )}
+          </span>
         </span>
-        <span className={overlayClass} aria-hidden="true" />
-        <span className={captionClass}>
-          <span className="truncate text-sm font-medium text-white">{item.title}</span>
-          {item.subtitle && (
-            <span className="shrink-0 font-mono text-xs text-zinc-400">{item.subtitle}</span>
+        <span className={backContentClass}>
+          {item.projectImage ? (
+            <>
+              <span className="absolute inset-0 flex items-center justify-center p-4">
+                <img
+                  src={item.projectImage}
+                  alt={item.projectTitle ?? ""}
+                  decoding="async"
+                  draggable={false}
+                  className={imgClass}
+                />
+              </span>
+              <span className={captionClass}>
+                <span className="truncate text-sm font-medium text-white">
+                  {item.projectTitle ?? "Hackathon project"}
+                </span>
+                {item.subtitle && (
+                  <span className="shrink-0 font-mono text-xs text-zinc-400">{item.subtitle}</span>
+                )}
+              </span>
+            </>
+          ) : (
+            <span className="flex h-full items-center justify-center px-4 text-center text-sm font-medium text-white">
+              Hackathon project
+            </span>
           )}
         </span>
-      </span >
+      </span>
     );
     const commonProps = {
       className: cx(tileClass, activeId === id && "is-active"),
